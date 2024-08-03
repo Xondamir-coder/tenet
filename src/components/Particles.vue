@@ -121,7 +121,7 @@ onMounted(() => {
 
 			// Wrap particles around if they go out of bounds
 			if (positions[0] > 200 || positions[0] < -200) particleVelocities[i * 3] *= -1;
-			if (positions[1] > 200 || positions[1] < -200) particleVelocities[i * 3 + 1] *= -1;
+			if (positions[1] > 90 || positions[1] < -90) particleVelocities[i * 3 + 1] *= -1;
 			if (positions[2] > 200 || positions[2] < -200) particleVelocities[i * 3 + 2] *= -1;
 
 			particle.geometry.attributes.position.needsUpdate = true;
