@@ -1,0 +1,57 @@
+body {
+	font-family: var(--font-bebas);
+	font-size: 1.6rem;
+}
+html {
+	/* 1rem = 10px */
+	font-size: 62.5%;
+}
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+@media only screen and (min-width: 1920px) {
+	html {
+		font-size: 70%;
+	}
+}
+@media only screen and (max-width: 1280px) {
+	html {
+		font-size: 60%;
+	}
+}
+@media only screen and (max-width: 768px) {
+	html {
+		font-size: 45%;
+	}
+}
+@media only screen and (max-width: 365px) {
+	html {
+		font-size: 40%;
+	}
+}
+
+html.lenis,
+html.lenis body {
+	height: auto;
+}
+
+.lenis.lenis-smooth {
+	scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+	overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+	overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+	pointer-events: none;
+}

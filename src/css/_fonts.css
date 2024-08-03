@@ -1,0 +1,80 @@
+/* Gilroy */
+@font-face {
+	font-family: 'Gilroy';
+	src: url('../fonts/gilroy/Gilroy-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Gilroy';
+	src: url('../fonts/gilroy/Gilroy-BoldItalic.woff2') format('woff2');
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+
+/* Bebas */
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-Bold.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-BoldItalic.woff2') format('woff2');
+	font-weight: 700;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-SemiExpBold.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-SemiExpBoldItalic.woff2') format('woff2');
+	font-weight: 600;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-Middle.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-MiddleItalic.woff2') format('woff2');
+	font-weight: 500;
+	font-style: italic;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-Regular.woff2') format('woff2');
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-Light.woff2') format('woff2');
+	font-weight: 300;
+	font-style: normal;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Bebas Neue Pro';
+	src: url('../fonts/bebas/BebasNeuePro-LightItalic.woff2') format('woff2');
+	font-weight: 300;
+	font-style: italic;
+	font-display: swap;
+}
