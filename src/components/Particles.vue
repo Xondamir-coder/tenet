@@ -1,5 +1,5 @@
 <template>
-	<div ref="sceneContainer" class="scene-container">
+	<div id="soon" ref="sceneContainer" class="scene-container">
 		<div v-for="(label, index) in labels" :key="index" class="label" :ref="label.ref">
 			{{ label.text }}
 		</div>
@@ -46,7 +46,7 @@ onMounted(() => {
 	const starTexture = textureLoader.load(circleUrl); // Adjust the path to your star image
 
 	const labeledParticleCount = 10;
-	const extraParticleCount = 10;
+	const extraParticleCount = 12;
 	const totalParticleCount = labeledParticleCount + extraParticleCount;
 
 	// Create particles with random sizes
@@ -67,7 +67,7 @@ onMounted(() => {
 
 		const particlePositions = new Float32Array(3);
 		particlePositions[0] = Math.random() * 400 - 200; // x position
-		particlePositions[1] = Math.random() * 200 - 100; // y position
+		particlePositions[1] = Math.random() * 190 - 90; // y position
 		particlePositions[2] = 80; // z position
 
 		particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
@@ -133,7 +133,7 @@ onMounted(() => {
 			}
 
 			for (let j = i + 1; j < totalParticleCount; j++) {
-				if (connections[i] < 2 && connections[j] < 2) {
+				if (connections[i] < 3 && connections[j] < 1) {
 					const pair = `${i}-${j}`;
 					if (!connectedPairs.has(pair)) {
 						connectedPairs.add(pair);
