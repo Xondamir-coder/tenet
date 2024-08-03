@@ -37,6 +37,7 @@ onMounted(() => {
 	const renderer = new THREE.WebGLRenderer();
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.setClearAlpha(0.0);
 	sceneContainer.value.appendChild(renderer.domElement);
 
 	// Load star texture
@@ -55,7 +56,7 @@ onMounted(() => {
 	});
 
 	const labeledParticleCount = 10;
-	const extraParticleCount = 10;
+	const extraParticleCount = 20; // 10 existing + 10 additional
 	const totalParticleCount = labeledParticleCount + extraParticleCount;
 	const particlePositions = new Float32Array(totalParticleCount * 3);
 	const particleVelocities = new Float32Array(totalParticleCount * 3);
@@ -75,7 +76,7 @@ onMounted(() => {
 
 	// Create lines
 	const linesGeometry = new THREE.BufferGeometry();
-	const linePositions = new Float32Array(totalParticleCount * totalParticleCount * 3);
+	const linePositions = new Float32Array(totalParticleCount * 6); // max 2 connections per particle
 	linesGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 	const linesMaterial = new THREE.LineBasicMaterial({
 		color: 0xffffff,
@@ -103,6 +104,7 @@ onMounted(() => {
 
 		const positions = particlesGeometry.attributes.position.array;
 		const linePositions = linesGeometry.attributes.position.array;
+		const connections = new Array(totalParticleCount).fill(0); // track connections per particle
 
 		for (let i = 0; i < totalParticleCount * 3; i += 3) {
 			positions[i] += particleVelocities[i] * 0.1;
@@ -119,14 +121,24 @@ onMounted(() => {
 
 		// Update line positions
 		let index = 0;
+		const connectedPairs = new Set();
+
 		for (let i = 0; i < totalParticleCount; i++) {
 			for (let j = i + 1; j < totalParticleCount; j++) {
-				linePositions[index++] = positions[i * 3];
-				linePositions[index++] = positions[i * 3 + 1];
-				linePositions[index++] = positions[i * 3 + 2];
-				linePositions[index++] = positions[j * 3];
-				linePositions[index++] = positions[j * 3 + 1];
-				linePositions[index++] = positions[j * 3 + 2];
+				if (connections[i] < 2 && connections[j] < 2) {
+					const pair = `${i}-${j}`;
+					if (!connectedPairs.has(pair)) {
+						connectedPairs.add(pair);
+						linePositions[index++] = positions[i * 3];
+						linePositions[index++] = positions[i * 3 + 1];
+						linePositions[index++] = positions[i * 3 + 2];
+						linePositions[index++] = positions[j * 3];
+						linePositions[index++] = positions[j * 3 + 1];
+						linePositions[index++] = positions[j * 3 + 2];
+						connections[i]++;
+						connections[j]++;
+					}
+				}
 			}
 		}
 		linesGeometry.attributes.position.needsUpdate = true;
@@ -169,6 +181,10 @@ onMounted(() => {
 	height: 100vh;
 	padding: 0 !important;
 	overflow: hidden;
+	background-image: url('@/assets/images/stars-bg.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: cen;
 	/* background: black; To provide a better contrast for the stars */
 }
 
