@@ -3,13 +3,14 @@
 		<div v-for="(label, index) in labels" :key="index" class="label" :ref="label.ref">
 			{{ label.text }}
 		</div>
+		<h1 class="title">скоро</h1>
 	</div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
-import starUrl from '@/assets/star.png';
+import circleUrl from '@/assets/circle.png';
 
 const sceneContainer = ref(null);
 
@@ -42,41 +43,48 @@ onMounted(() => {
 
 	// Load star texture
 	const textureLoader = new THREE.TextureLoader();
-	const starTexture = textureLoader.load(starUrl); // Adjust the path to your star image
-
-	// Create particles
-	const particlesGeometry = new THREE.BufferGeometry();
-	const particlesMaterial = new THREE.PointsMaterial({
-		size: 10,
-		sizeAttenuation: true,
-		alphaMap: starTexture,
-		transparent: true,
-		depthWrite: false,
-		blending: THREE.AdditiveBlending
-	});
+	const starTexture = textureLoader.load(circleUrl); // Adjust the path to your star image
 
 	const labeledParticleCount = 10;
-	const extraParticleCount = 20; // 10 existing + 10 additional
+	const extraParticleCount = 10;
 	const totalParticleCount = labeledParticleCount + extraParticleCount;
-	const particlePositions = new Float32Array(totalParticleCount * 3);
+
+	// Create particles with random sizes
+	const particles = [];
 	const particleVelocities = new Float32Array(totalParticleCount * 3);
 
-	for (let i = 0; i < totalParticleCount * 3; i += 3) {
-		particlePositions[i] = Math.random() * 400 - 200; // x position
-		particlePositions[i + 1] = Math.random() * 400 - 200; // y position
-		particlePositions[i + 2] = 80; // z position
+	for (let i = 0; i < totalParticleCount; i++) {
+		const particleSize = Math.random() * 10 + 5; // Random size between 5 and 15
+		const particlesGeometry = new THREE.BufferGeometry();
+		const particlesMaterial = new THREE.PointsMaterial({
+			size: particleSize,
+			sizeAttenuation: true,
+			alphaMap: starTexture,
+			transparent: true,
+			depthWrite: false,
+			blending: THREE.AdditiveBlending
+		});
 
-		particleVelocities[i] = (Math.random() - 0.5) * 2; // x velocity
-		particleVelocities[i + 1] = (Math.random() - 0.5) * 2; // y velocity
+		const particlePositions = new Float32Array(3);
+		particlePositions[0] = Math.random() * 100 - 200; // x position (left side)
+		if (i >= totalParticleCount / 2) {
+			particlePositions[0] = Math.random() * 180 + 60; // x position (right side)
+		}
+		particlePositions[1] = Math.random() * 190 - 100; // y position
+		particlePositions[2] = 80; // z position
+
+		particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+		const particle = new THREE.Points(particlesGeometry, particlesMaterial);
+		particles.push(particle);
+		scene.add(particle);
+
+		particleVelocities[i * 3] = (Math.random() - 0.5) * 2; // x velocity
+		particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 2; // y velocity
 	}
-
-	particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-	const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-	scene.add(particles);
 
 	// Create lines
 	const linesGeometry = new THREE.BufferGeometry();
-	const linePositions = new Float32Array(totalParticleCount * 6); // max 2 connections per particle
+	const linePositions = new Float32Array(totalParticleCount * 6); // max 1 connection per particle
 	linesGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 	const linesMaterial = new THREE.LineBasicMaterial({
 		color: 0xffffff,
@@ -102,39 +110,43 @@ onMounted(() => {
 	const animate = function () {
 		requestAnimationFrame(animate);
 
-		const positions = particlesGeometry.attributes.position.array;
-		const linePositions = linesGeometry.attributes.position.array;
 		const connections = new Array(totalParticleCount).fill(0); // track connections per particle
-
-		for (let i = 0; i < totalParticleCount * 3; i += 3) {
-			positions[i] += particleVelocities[i] * 0.1;
-			positions[i + 1] += particleVelocities[i + 1] * 0.1;
-			positions[i + 2] += particleVelocities[i + 2] * 0.1;
-
-			// Wrap particles around if they go out of bounds
-			if (positions[i] > 200 || positions[i] < -200) particleVelocities[i] *= -1;
-			if (positions[i + 1] > 200 || positions[i + 1] < -200) particleVelocities[i + 1] *= -1;
-			if (positions[i + 2] > 200 || positions[i + 2] < -200) particleVelocities[i + 2] *= -1;
-		}
-
-		particlesGeometry.attributes.position.needsUpdate = true;
-
-		// Update line positions
 		let index = 0;
 		const connectedPairs = new Set();
 
 		for (let i = 0; i < totalParticleCount; i++) {
+			const particle = particles[i];
+			const positions = particle.geometry.attributes.position.array;
+
+			positions[0] += particleVelocities[i * 3] * 0.1;
+			positions[1] += particleVelocities[i * 3 + 1] * 0.1;
+			positions[2] += particleVelocities[i * 3 + 2] * 0.1;
+
+			// Wrap particles around if they go out of bounds
+			if (positions[0] > 200 || positions[0] < -200) particleVelocities[i * 3] *= -1;
+			if (positions[1] > 200 || positions[1] < -200) particleVelocities[i * 3 + 1] *= -1;
+			if (positions[2] > 200 || positions[2] < -200) particleVelocities[i * 3 + 2] *= -1;
+
+			particle.geometry.attributes.position.needsUpdate = true;
+
+			// Update label positions for the first 10 particles only
+			if (i < labeledParticleCount) {
+				const label = sceneContainer.value.querySelectorAll('.label')[i];
+				updateLabelPosition(label, positions[0], positions[1], positions[2]);
+			}
+
 			for (let j = i + 1; j < totalParticleCount; j++) {
 				if (connections[i] < 2 && connections[j] < 2) {
 					const pair = `${i}-${j}`;
 					if (!connectedPairs.has(pair)) {
 						connectedPairs.add(pair);
-						linePositions[index++] = positions[i * 3];
-						linePositions[index++] = positions[i * 3 + 1];
-						linePositions[index++] = positions[i * 3 + 2];
-						linePositions[index++] = positions[j * 3];
-						linePositions[index++] = positions[j * 3 + 1];
-						linePositions[index++] = positions[j * 3 + 2];
+						const particleB = particles[j].geometry.attributes.position.array;
+						linePositions[index++] = positions[0];
+						linePositions[index++] = positions[1];
+						linePositions[index++] = positions[2];
+						linePositions[index++] = particleB[0];
+						linePositions[index++] = particleB[1];
+						linePositions[index++] = particleB[2];
 						connections[i]++;
 						connections[j]++;
 					}
@@ -142,17 +154,6 @@ onMounted(() => {
 			}
 		}
 		linesGeometry.attributes.position.needsUpdate = true;
-
-		// Update label positions for the first 10 particles only
-		for (let i = 0; i < labeledParticleCount; i++) {
-			const label = sceneContainer.value.querySelectorAll('.label')[i];
-			updateLabelPosition(
-				label,
-				positions[i * 3],
-				positions[i * 3 + 1],
-				positions[i * 3 + 2]
-			);
-		}
 
 		renderer.render(scene, camera);
 	};
@@ -174,17 +175,31 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.title {
+	color: #fff;
+	font-size: 10rem;
+	letter-spacing: 20px;
+	text-transform: uppercase;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	@media only screen and (max-width: 768px) {
+		font-size: max(8rem, 60px);
+	}
+}
 .scene-container {
 	position: relative;
 	width: 100%;
 	height: 100vh;
 	padding: 0 !important;
 	overflow: hidden;
-	background-image: url('@/assets/images/stars-bg.jpg');
+	background-image: url('@/assets/images/stars-bg.webp');
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: cen;
+	background-position: center;
 	/* background: black; To provide a better contrast for the stars */
 }
 
