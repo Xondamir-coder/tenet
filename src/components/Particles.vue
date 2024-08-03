@@ -66,11 +66,8 @@ onMounted(() => {
 		});
 
 		const particlePositions = new Float32Array(3);
-		particlePositions[0] = Math.random() * 100 - 200; // x position (left side)
-		if (i >= totalParticleCount / 2) {
-			particlePositions[0] = Math.random() * 180 + 60; // x position (right side)
-		}
-		particlePositions[1] = Math.random() * 190 - 100; // y position
+		particlePositions[0] = Math.random() * 400 - 200; // x position
+		particlePositions[1] = Math.random() * 200 - 100; // y position
 		particlePositions[2] = 80; // z position
 
 		particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
