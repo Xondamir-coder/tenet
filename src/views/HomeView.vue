@@ -78,11 +78,7 @@
 				</li>
 			</ul>
 		</section>
-		<section id="soon" class="soon">
-			<img :src="imgSrc" alt="soon bg" />
-
-			<h1 class="soon__title">Скоро</h1>
-		</section>
+		<Particles />
 		<section class="links">
 			<ul class="links__list">
 				<li
@@ -111,6 +107,7 @@ import bigBg from '@/assets/images/big-bg.avif';
 import smallBg from '@/assets/images/small-bg.avif';
 import lenis from '@/js/lenis';
 import { onMounted, ref } from 'vue';
+import Particles from '@/components/Particles.vue';
 
 const missions = [
 	{
@@ -147,7 +144,6 @@ const goals = [
 ];
 const partnerImgs = [partnerImg1, partnerImg2, partnerImg1, partnerImg2, partnerImg1, partnerImg2];
 const links = ['Мы', 'Миссия', 'Видение', 'Цели', 'Скоро'];
-const imgSrc = window.innerWidth > 800 ? bigBg : smallBg;
 const linkMap = {
 	Миссия: 'mission',
 	Видение: 'mission',
@@ -202,35 +198,7 @@ onMounted(() => {
 		}
 	}
 }
-.soon {
-	height: 40rem;
-	display: grid;
-	place-items: center;
-	color: #fff;
-	position: relative;
-	&.active {
-		.soon__title {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-	img {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-	}
-	&__title {
-		z-index: 1;
-		font-size: 10rem;
-		letter-spacing: 20px;
-		text-transform: uppercase;
-		opacity: 0;
-		transform: scale(0);
-		transition: opacity 0.7s, transform 0.7s;
-	}
-}
+
 .partners {
 	display: flex;
 	flex-direction: column;
