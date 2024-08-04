@@ -307,7 +307,7 @@ onMounted(() => {
 	height: 400px;
 	padding: 0 !important;
 	overflow: hidden;
-	background-image: url('@/assets/images/stars-bg.webp');
+	background-image: url('@/assets/images/particle-bg.avif');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
