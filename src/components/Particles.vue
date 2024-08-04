@@ -6,6 +6,7 @@
 		<h1 class="title">скоро</h1>
 	</div>
 </template>
+
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
@@ -103,15 +104,15 @@ onMounted(() => {
 		},
 		{
 			xRange: [-200, -100],
-			yRange: [-100, -50],
+			yRange: [-50, 0], // Adjusted yRange to be more visible
 			particles: [],
 			positions: [
-				[-190, -90, 80],
-				[-170, -80, 80],
-				[-150, -70, 80],
-				[-130, -60, 80],
-				[-110, -50, 80],
-				[-180, -80, 80]
+				[-190, -20, 80],
+				[-170, -10, 80],
+				[-150, 0, 80],
+				[-130, 10, 80],
+				[-110, 20, 80],
+				[-180, -10, 80]
 			],
 			connections: [
 				[0, 1],
@@ -123,17 +124,17 @@ onMounted(() => {
 		},
 		{
 			xRange: [100, 200],
-			yRange: [-100, -50],
+			yRange: [-50, 0], // Adjusted yRange to be more visible
 			particles: [],
 			positions: [
-				[110, -90, 80],
-				[130, -80, 80],
-				[150, -70, 80],
-				[170, -60, 80],
-				[180, -50, 80],
-				[120, -80, 80],
-				[140, -70, 80],
-				[160, -60, 80]
+				[110, -20, 80],
+				[130, -10, 80],
+				[150, -0, 80],
+				[170, 10, 80],
+				[180, 20, 80],
+				[120, -10, 80],
+				[140, 0, 80],
+				[160, 10, 80]
 			],
 			connections: [
 				[0, 1],
@@ -160,7 +161,7 @@ onMounted(() => {
 
 	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
 		for (let i = 0; i < labeledCount + unnamedCount; i++) {
-			const particleSize = Math.random() * 10 + 5; // Random size between 5 and 15
+			const particleSize = Math.random() * 10 + 10; // Random size between 10 and 20 for better visibility
 			const particlesGeometry = new THREE.BufferGeometry();
 			const particlesMaterial = new THREE.PointsMaterial({
 				size: particleSize,
@@ -213,7 +214,7 @@ onMounted(() => {
 	const linesMaterial = new THREE.LineBasicMaterial({
 		color: 0xffffff,
 		transparent: true,
-		opacity: 0.5
+		opacity: 0.8 // Increased opacity for better visibility
 	});
 	const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
 	scene.add(lines);
@@ -311,7 +312,7 @@ onMounted(() => {
 .scene-container {
 	position: relative;
 	width: 100%;
-	height: 100vh;
+	height: 400px;
 	padding: 0 !important;
 	overflow: hidden;
 	background-image: url('@/assets/images/stars-bg.webp');
