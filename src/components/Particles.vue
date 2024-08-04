@@ -6,7 +6,6 @@
 		<h1 class="title">скоро</h1>
 	</div>
 </template>
-
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
@@ -39,7 +38,7 @@ onMounted(() => {
 		0.1,
 		1000
 	);
-	const renderer = new THREE.WebGLRenderer();
+	const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearAlpha(0.0);
@@ -47,32 +46,32 @@ onMounted(() => {
 
 	// Load star texture
 	const textureLoader = new THREE.TextureLoader();
-	const starTexture = textureLoader.load(circleUrl); // Adjust the path to your star image
+	const starTexture = textureLoader.load(circleUrl);
 
-	const labeledParticleCount = 3; // 3 labeled particles per section
-	const extraLabeledParticleCount = 2; // 2 extra labeled particles for bottom right
-	const unnamedParticleCount = 3; // 3 unnamed particles per section
+	const labeledParticleCount = 3;
+	const extraLabeledParticleCount = 2;
+	const unnamedParticleCount = 3;
 	const totalSections = 4;
 	const totalParticleCount =
 		labeledParticleCount * (totalSections - 1) +
 		extraLabeledParticleCount +
-		unnamedParticleCount * totalSections; // 4 sections
+		unnamedParticleCount * totalSections;
+
 	const particles = [];
 	const particleVelocities = new Float32Array(totalParticleCount * 3);
 
-	// Define constellation positions for each section
 	const sections = [
 		{
-			xRange: [-200, -100],
-			yRange: [50, 100],
+			xRange: [-200, 20],
+			yRange: [50, 60],
 			particles: [],
 			positions: [
-				[-190, 90, 80],
-				[-170, 80, 80],
-				[-150, 70, 80],
-				[-130, 60, 80],
-				[-110, 50, 80],
-				[-180, 80, 80]
+				[-40, 50, 80],
+				[-70, 80, 80],
+				[-130, 70, 80],
+				[-120, 60, 80],
+				[-170, 50, 80],
+				[-190, 80, 80]
 			],
 			connections: [
 				[0, 1],
@@ -83,16 +82,16 @@ onMounted(() => {
 			]
 		},
 		{
-			xRange: [100, 200],
+			xRange: [-100, 220],
 			yRange: [50, 100],
 			particles: [],
 			positions: [
-				[120, 90, 80],
-				[140, 80, 80],
-				[160, 70, 80],
+				[40, 70, 80],
+				[70, 50, 80],
+				[100, 60, 80],
+				[130, 55, 80],
 				[180, 60, 80],
-				[190, 50, 80],
-				[110, 80, 80]
+				[190, 80, 80]
 			],
 			connections: [
 				[0, 1],
@@ -104,15 +103,15 @@ onMounted(() => {
 		},
 		{
 			xRange: [-200, -100],
-			yRange: [-50, 0], // Adjusted yRange to be more visible
+			yRange: [-5, 0],
 			particles: [],
 			positions: [
-				[-190, -20, 80],
+				[-100, 3, 80],
+				[-130, -30, 80],
+				[-150, 10, 80],
+				[-190, 20, 80],
 				[-170, -10, 80],
-				[-150, 0, 80],
-				[-130, 10, 80],
-				[-110, 20, 80],
-				[-180, -10, 80]
+				[-200, -10, 80]
 			],
 			connections: [
 				[0, 1],
@@ -124,17 +123,17 @@ onMounted(() => {
 		},
 		{
 			xRange: [100, 200],
-			yRange: [-50, 0], // Adjusted yRange to be more visible
+			yRange: [-50, 30],
 			particles: [],
 			positions: [
-				[110, -20, 80],
-				[130, -10, 80],
-				[150, -0, 80],
-				[170, 10, 80],
-				[180, 20, 80],
-				[120, -10, 80],
-				[140, 0, 80],
-				[160, 10, 80]
+				[50, 15, 80],
+				[80, -5, 80],
+				[100, 10, 80],
+				[120, 40, 80],
+				[180, 25, 80],
+				[120, -5, 80],
+				[140, 5, 80],
+				[160, 15, 80]
 			],
 			connections: [
 				[0, 1],
@@ -161,7 +160,7 @@ onMounted(() => {
 
 	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
 		for (let i = 0; i < labeledCount + unnamedCount; i++) {
-			const particleSize = Math.random() * 10 + 10; // Random size between 10 and 20 for better visibility
+			const particleSize = Math.random() * 10 + 10;
 			const particlesGeometry = new THREE.BufferGeometry();
 			const particlesMaterial = new THREE.PointsMaterial({
 				size: particleSize,
@@ -183,9 +182,9 @@ onMounted(() => {
 			scene.add(particle);
 
 			const particleIndex = particles.indexOf(particle);
-			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 2; // x velocity
-			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 2; // y velocity
-			particleVelocities[particleIndex * 3 + 2] = 0; // z velocity is 0 to avoid depth movement
+			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.4;
+			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.4;
+			particleVelocities[particleIndex * 3 + 2] = 0;
 
 			if (i < labeledCount) {
 				particleLabels.push({ particle, label: labels.shift() });
@@ -193,10 +192,8 @@ onMounted(() => {
 		}
 	};
 
-	// Place labeled and unnamed particles in each section
 	sections.forEach((section, index) => {
 		if (index === 3) {
-			// Bottom right section gets extra labeled particles
 			placeParticlesInSection(
 				section,
 				labeledParticleCount + extraLabeledParticleCount,
@@ -207,14 +204,13 @@ onMounted(() => {
 		}
 	});
 
-	// Create lines
 	const linesGeometry = new THREE.BufferGeometry();
-	const linePositions = new Float32Array(totalParticleCount * 6); // max 1 connection per particle
+	const linePositions = new Float32Array(totalParticleCount * 6);
 	linesGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
 	const linesMaterial = new THREE.LineBasicMaterial({
 		color: 0xffffff,
 		transparent: true,
-		opacity: 0.8 // Increased opacity for better visibility
+		opacity: 0.8
 	});
 	const lines = new THREE.LineSegments(linesGeometry, linesMaterial);
 	scene.add(lines);
@@ -224,17 +220,16 @@ onMounted(() => {
 	const animate = function () {
 		requestAnimationFrame(animate);
 
-		let lineIndex = 0; // Reset line index for each frame
+		let lineIndex = 0;
 
 		sections.forEach(section => {
 			section.particles.forEach((particle, i) => {
 				const positions = particle.geometry.attributes.position.array;
 				const particleIndex = particles.indexOf(particle);
 
-				positions[0] += particleVelocities[particleIndex * 3] * 0.1;
-				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.1;
+				positions[0] += particleVelocities[particleIndex * 3] * 0.2;
+				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.2;
 
-				// Wrap particles around if they go out of bounds
 				if (positions[0] > section.xRange[1] || positions[0] < section.xRange[0])
 					particleVelocities[particleIndex * 3] *= -1;
 				if (positions[1] > section.yRange[1] || positions[1] < section.yRange[0])
@@ -242,7 +237,6 @@ onMounted(() => {
 
 				particle.geometry.attributes.position.needsUpdate = true;
 
-				// Update label positions
 				particleLabels.forEach(({ particle: labeledParticle, label }, index) => {
 					if (particle === labeledParticle) {
 						const labelElement =
@@ -259,7 +253,6 @@ onMounted(() => {
 				});
 			});
 
-			// Create connections within the section
 			section.connections.forEach(([startIndex, endIndex]) => {
 				const startPos = section.particles[startIndex].geometry.attributes.position.array;
 				const endPos = section.particles[endIndex].geometry.attributes.position.array;
@@ -279,7 +272,6 @@ onMounted(() => {
 
 	animate();
 
-	// Handle window resize
 	const onWindowResize = () => {
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
