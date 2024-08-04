@@ -6,7 +6,6 @@
 		<h1 class="title">скоро</h1>
 	</div>
 </template>
-
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
@@ -24,8 +23,12 @@ const labels = [
 	{ text: 'Cosiness', ref: 'label7' },
 	{ text: 'Stability', ref: 'label8' },
 	{ text: 'Idea', ref: 'label9' },
-	{ text: 'Modernized', ref: 'label10' }
+	{ text: 'Modernized', ref: 'label10' },
+	{ text: 'Convenience', ref: 'label11' },
+	{ text: 'Security', ref: 'label12' }
 ];
+
+const particleLabels = [];
 
 onMounted(() => {
 	const scene = new THREE.Scene();
@@ -45,39 +48,163 @@ onMounted(() => {
 	const textureLoader = new THREE.TextureLoader();
 	const starTexture = textureLoader.load(circleUrl); // Adjust the path to your star image
 
-	const labeledParticleCount = 10;
-	const extraParticleCount = 12;
-	const totalParticleCount = labeledParticleCount + extraParticleCount;
-
-	// Create particles with random sizes
+	const labeledParticleCount = 3; // 3 labeled particles per section
+	const extraLabeledParticleCount = 2; // 2 extra labeled particles for bottom right
+	const unnamedParticleCount = 3; // 3 unnamed particles per section
+	const totalSections = 4;
+	const totalParticleCount =
+		labeledParticleCount * (totalSections - 1) +
+		extraLabeledParticleCount +
+		unnamedParticleCount * totalSections; // 4 sections
 	const particles = [];
 	const particleVelocities = new Float32Array(totalParticleCount * 3);
 
-	for (let i = 0; i < totalParticleCount; i++) {
-		const particleSize = Math.random() * 10 + 5; // Random size between 5 and 15
-		const particlesGeometry = new THREE.BufferGeometry();
-		const particlesMaterial = new THREE.PointsMaterial({
-			size: particleSize,
-			sizeAttenuation: true,
-			alphaMap: starTexture,
-			transparent: true,
-			depthWrite: false,
-			blending: THREE.AdditiveBlending
-		});
+	// Define constellation positions for each section
+	const sections = [
+		{
+			xRange: [-200, -100],
+			yRange: [50, 100],
+			particles: [],
+			positions: [
+				[-190, 90, 80],
+				[-170, 80, 80],
+				[-150, 70, 80],
+				[-130, 60, 80],
+				[-110, 50, 80],
+				[-180, 80, 80]
+			],
+			connections: [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3, 4],
+				[4, 5]
+			]
+		},
+		{
+			xRange: [100, 200],
+			yRange: [50, 100],
+			particles: [],
+			positions: [
+				[120, 90, 80],
+				[140, 80, 80],
+				[160, 70, 80],
+				[180, 60, 80],
+				[190, 50, 80],
+				[110, 80, 80]
+			],
+			connections: [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3, 4],
+				[4, 5]
+			]
+		},
+		{
+			xRange: [-200, -100],
+			yRange: [-100, -50],
+			particles: [],
+			positions: [
+				[-190, -90, 80],
+				[-170, -80, 80],
+				[-150, -70, 80],
+				[-130, -60, 80],
+				[-110, -50, 80],
+				[-180, -80, 80]
+			],
+			connections: [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3, 4],
+				[4, 5]
+			]
+		},
+		{
+			xRange: [100, 200],
+			yRange: [-100, -50],
+			particles: [],
+			positions: [
+				[110, -90, 80],
+				[130, -80, 80],
+				[150, -70, 80],
+				[170, -60, 80],
+				[180, -50, 80],
+				[120, -80, 80],
+				[140, -70, 80],
+				[160, -60, 80]
+			],
+			connections: [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3, 4],
+				[4, 5],
+				[5, 6],
+				[6, 7]
+			]
+		}
+	];
 
-		const particlePositions = new Float32Array(3);
-		particlePositions[0] = Math.random() * 400 - 200; // x position
-		particlePositions[1] = Math.random() * 190 - 90; // y position
-		particlePositions[2] = 80; // z position
+	const updateLabelPosition = (label, x, y, z) => {
+		const vector = new THREE.Vector3(x, y, z);
+		vector.project(camera);
 
-		particlesGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-		const particle = new THREE.Points(particlesGeometry, particlesMaterial);
-		particles.push(particle);
-		scene.add(particle);
+		const widthHalf = window.innerWidth / 2;
+		const heightHalf = window.innerHeight / 2;
 
-		particleVelocities[i * 3] = (Math.random() - 0.5) * 2; // x velocity
-		particleVelocities[i * 3 + 1] = (Math.random() - 0.5) * 2; // y velocity
-	}
+		label.style.left = `${vector.x * widthHalf + widthHalf}px`;
+		label.style.top = `${-(vector.y * heightHalf) + heightHalf}px`;
+	};
+
+	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
+		for (let i = 0; i < labeledCount + unnamedCount; i++) {
+			const particleSize = Math.random() * 10 + 5; // Random size between 5 and 15
+			const particlesGeometry = new THREE.BufferGeometry();
+			const particlesMaterial = new THREE.PointsMaterial({
+				size: particleSize,
+				sizeAttenuation: true,
+				alphaMap: starTexture,
+				transparent: true,
+				depthWrite: false,
+				blending: THREE.AdditiveBlending
+			});
+
+			const particlePositions = new Float32Array(section.positions[i]);
+			particlesGeometry.setAttribute(
+				'position',
+				new THREE.BufferAttribute(particlePositions, 3)
+			);
+			const particle = new THREE.Points(particlesGeometry, particlesMaterial);
+			particles.push(particle);
+			section.particles.push(particle);
+			scene.add(particle);
+
+			const particleIndex = particles.indexOf(particle);
+			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 2; // x velocity
+			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 2; // y velocity
+			particleVelocities[particleIndex * 3 + 2] = 0; // z velocity is 0 to avoid depth movement
+
+			if (i < labeledCount) {
+				particleLabels.push({ particle, label: labels.shift() });
+			}
+		}
+	};
+
+	// Place labeled and unnamed particles in each section
+	sections.forEach((section, index) => {
+		if (index === 3) {
+			// Bottom right section gets extra labeled particles
+			placeParticlesInSection(
+				section,
+				labeledParticleCount + extraLabeledParticleCount,
+				unnamedParticleCount
+			);
+		} else {
+			placeParticlesInSection(section, labeledParticleCount, unnamedParticleCount);
+		}
+	});
 
 	// Create lines
 	const linesGeometry = new THREE.BufferGeometry();
@@ -93,65 +220,59 @@ onMounted(() => {
 
 	camera.position.z = 200;
 
-	const updateLabelPosition = (label, x, y, z) => {
-		const vector = new THREE.Vector3(x, y, z);
-		vector.project(camera);
-
-		const widthHalf = window.innerWidth / 2;
-		const heightHalf = window.innerHeight / 2;
-
-		label.style.left = `${vector.x * widthHalf + widthHalf}px`;
-		label.style.top = `${-(vector.y * heightHalf) + heightHalf}px`;
-	};
-
 	const animate = function () {
 		requestAnimationFrame(animate);
 
-		const connections = new Array(totalParticleCount).fill(0); // track connections per particle
-		let index = 0;
-		const connectedPairs = new Set();
+		let lineIndex = 0; // Reset line index for each frame
 
-		for (let i = 0; i < totalParticleCount; i++) {
-			const particle = particles[i];
-			const positions = particle.geometry.attributes.position.array;
+		sections.forEach(section => {
+			section.particles.forEach((particle, i) => {
+				const positions = particle.geometry.attributes.position.array;
+				const particleIndex = particles.indexOf(particle);
 
-			positions[0] += particleVelocities[i * 3] * 0.1;
-			positions[1] += particleVelocities[i * 3 + 1] * 0.1;
-			positions[2] += particleVelocities[i * 3 + 2] * 0.1;
+				positions[0] += particleVelocities[particleIndex * 3] * 0.1;
+				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.1;
 
-			// Wrap particles around if they go out of bounds
-			if (positions[0] > 200 || positions[0] < -200) particleVelocities[i * 3] *= -1;
-			if (positions[1] > 90 || positions[1] < -90) particleVelocities[i * 3 + 1] *= -1;
-			if (positions[2] > 200 || positions[2] < -200) particleVelocities[i * 3 + 2] *= -1;
+				// Wrap particles around if they go out of bounds
+				if (positions[0] > section.xRange[1] || positions[0] < section.xRange[0])
+					particleVelocities[particleIndex * 3] *= -1;
+				if (positions[1] > section.yRange[1] || positions[1] < section.yRange[0])
+					particleVelocities[particleIndex * 3 + 1] *= -1;
 
-			particle.geometry.attributes.position.needsUpdate = true;
+				particle.geometry.attributes.position.needsUpdate = true;
 
-			// Update label positions for the first 10 particles only
-			if (i < labeledParticleCount) {
-				const label = sceneContainer.value.querySelectorAll('.label')[i];
-				updateLabelPosition(label, positions[0], positions[1], positions[2]);
-			}
-
-			for (let j = i + 1; j < totalParticleCount; j++) {
-				if (connections[i] < 3 && connections[j] < 1) {
-					const pair = `${i}-${j}`;
-					if (!connectedPairs.has(pair)) {
-						connectedPairs.add(pair);
-						const particleB = particles[j].geometry.attributes.position.array;
-						linePositions[index++] = positions[0];
-						linePositions[index++] = positions[1];
-						linePositions[index++] = positions[2];
-						linePositions[index++] = particleB[0];
-						linePositions[index++] = particleB[1];
-						linePositions[index++] = particleB[2];
-						connections[i]++;
-						connections[j]++;
+				// Update label positions
+				particleLabels.forEach(({ particle: labeledParticle, label }, index) => {
+					if (particle === labeledParticle) {
+						const labelElement =
+							sceneContainer.value?.querySelectorAll('.label')[index];
+						if (labelElement) {
+							updateLabelPosition(
+								labelElement,
+								positions[0],
+								positions[1],
+								positions[2]
+							);
+						}
 					}
-				}
-			}
-		}
-		linesGeometry.attributes.position.needsUpdate = true;
+				});
+			});
 
+			// Create connections within the section
+			section.connections.forEach(([startIndex, endIndex]) => {
+				const startPos = section.particles[startIndex].geometry.attributes.position.array;
+				const endPos = section.particles[endIndex].geometry.attributes.position.array;
+
+				linePositions[lineIndex++] = startPos[0];
+				linePositions[lineIndex++] = startPos[1];
+				linePositions[lineIndex++] = startPos[2];
+				linePositions[lineIndex++] = endPos[0];
+				linePositions[lineIndex++] = endPos[1];
+				linePositions[lineIndex++] = endPos[2];
+			});
+		});
+
+		linesGeometry.attributes.position.needsUpdate = true;
 		renderer.render(scene, camera);
 	};
 
