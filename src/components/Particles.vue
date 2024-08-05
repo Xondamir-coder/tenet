@@ -227,8 +227,8 @@ onMounted(() => {
 				const positions = particle.geometry.attributes.position.array;
 				const particleIndex = particles.indexOf(particle);
 
-				positions[0] += particleVelocities[particleIndex * 3] * 0.2;
-				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.2;
+				positions[0] += particleVelocities[particleIndex * 3] * 0.08;
+				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.08;
 
 				if (positions[0] > section.xRange[1] || positions[0] < section.xRange[0])
 					particleVelocities[particleIndex * 3] *= -1;
