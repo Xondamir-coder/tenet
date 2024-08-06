@@ -1,5 +1,6 @@
 <template>
 	<div id="soon" ref="sceneContainer" class="scene-container">
+		<img :src="imgSrc" alt="bg" />
 		<div v-for="(label, index) in labels" :key="index" class="label" :ref="label.ref">
 			{{ label.text }}
 		</div>
@@ -10,9 +11,13 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
 import circleUrl from '@/assets/circle.png';
+import bigParticleBg from '@/assets/images/particle-bg.avif';
+import smallParticleBg from '@/assets/images/small-particle-bg.jpg';
 
 const sceneContainer = ref(null);
 
+const isBig = window.innerWidth > 768;
+const imgSrc = isBig ? bigParticleBg : smallParticleBg;
 const labels = [
 	{ text: 'Opportunity', ref: 'label1' },
 	{ text: 'Pacification', ref: 'label2' },
@@ -31,6 +36,9 @@ const labels = [
 const particleLabels = [];
 
 onMounted(() => {
+	const initialWidth = window.innerWidth;
+	const initialHeight = window.innerHeight;
+
 	const scene = new THREE.Scene();
 	const camera = new THREE.PerspectiveCamera(
 		75,
@@ -158,9 +166,14 @@ onMounted(() => {
 		label.style.top = `${-(vector.y * heightHalf) + heightHalf}px`;
 	};
 
+	const originalPositions = [];
+	const originalSizes = [];
+
 	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
 		for (let i = 0; i < labeledCount + unnamedCount; i++) {
 			const particleSize = Math.random() * 10 + 10;
+			originalSizes.push(particleSize);
+
 			const particlesGeometry = new THREE.BufferGeometry();
 			const particlesMaterial = new THREE.PointsMaterial({
 				size: particleSize,
@@ -172,6 +185,7 @@ onMounted(() => {
 			});
 
 			const particlePositions = new Float32Array(section.positions[i]);
+			originalPositions.push([...section.positions[i]]);
 			particlesGeometry.setAttribute(
 				'position',
 				new THREE.BufferAttribute(particlePositions, 3)
@@ -273,10 +287,27 @@ onMounted(() => {
 	animate();
 
 	const onWindowResize = () => {
+		const widthRatio = window.innerWidth / initialWidth;
+		const heightRatio = window.innerHeight / initialHeight;
+
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
+
+		particles.forEach((particle, index) => {
+			const positions = particle.geometry.attributes.position.array;
+			positions[0] = originalPositions[index][0] * widthRatio;
+			positions[1] = originalPositions[index][1] * heightRatio;
+			positions[2] = originalPositions[index][2]; // Assuming z-axis remains the same
+			particle.geometry.attributes.position.needsUpdate = true;
+
+			const material = particle.material;
+			material.size = originalSizes[index] * Math.min(widthRatio, heightRatio);
+			material.needsUpdate = true;
+		});
 	};
+
+	window.addEventListener('resize', onWindowResize);
 
 	window.addEventListener('resize', onWindowResize);
 
@@ -307,11 +338,21 @@ onMounted(() => {
 	height: 400px;
 	padding: 0 !important;
 	overflow: hidden;
-	background-image: url('@/assets/images/particle-bg.avif');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	/* background: black; To provide a better contrast for the stars */
+	@media only screen and (max-width: 768px) {
+		height: 200px;
+	}
+	img {
+		height: 100%;
+		width: 100%;
+		object-fit: cover;
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+	}
+	// background-image: url('@/assets/images/particle-bg.avif');
+	// background-repeat: no-repeat;
+	// background-size: cover;
+	// background-position: center;
 }
 
 .label {

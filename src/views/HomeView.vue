@@ -7,12 +7,12 @@
 				@click="navigateTo(link)"
 				class="list__item"
 				v-for="link in links"
-				:class="{ 'list__item--active': link == 'Мы' }"
+				:class="{ 'list__item--active': link == activeLink }"
 				:key="link">
 				{{ link }}
 			</li>
 		</ul>
-		<section class="create">
+		<section id="we" class="create">
 			<div class="create__left">
 				<p class="create__big">Создаём</p>
 				<p class="create__massive">Каноны</p>
@@ -22,17 +22,10 @@
 					TENET GROUP – Согласны ли вы с тем, что будущее – это не то, что нас ждет, а то,
 					что мы создаем?
 				</h1>
-				<p class="create__right-text">
-					Компания Tenet Group выходит за рамки привычного представления о девелопменте и
-					строительстве. Мы тщательно прорабатываем каждую деталь наших проектов, четко
-					осознавая как целостную природу строительства, так и значение каждой отдельной
-					части в создании единого сооружения.
-				</p>
-				<p class="create__right-text">
-					Наши дома — это не просто стены и крыша, это фундамент для самых важных моментов
-					вашей жизни. Мы воплощаем пространства, где вы сможете созидать моменты счастья
-					и создавать историю, которая останется с вами навсегда.
-				</p>
+				<p class="create__right-text" v-html="createText"></p>
+				<button class="more-button" @click="showOrCollapseCreateText" type="button">
+					{{ createText.length > 153 ? 'Скрыть...' : 'Показать еще...' }}
+				</button>
 			</div>
 		</section>
 		<section class="boss">
@@ -52,7 +45,19 @@
 					{{ mission.title }}
 				</h1>
 				<p class="mission__subtitle">{{ mission.subtitle }}</p>
-				<p class="mission__text">{{ mission.text }}</p>
+				<p class="mission__text" v-if="!isBig">
+					{{ mission.fullText ? mission.text : `${mission.text.slice(0, 100)} ...` }}
+				</p>
+				<p class="mission__text" v-else>
+					{{ mission.text }}
+				</p>
+				<button
+					class="more-button"
+					@click="mission.fullText = !mission.fullText"
+					type="button"
+					v-if="!isBig">
+					{{ mission.fullText ? 'Скрыть...' : 'Показать еще...' }}
+				</button>
 			</div>
 		</section>
 		<section id="goals" class="goals">
@@ -79,19 +84,18 @@
 			</ul>
 		</section>
 		<Particles />
-		<section class="links">
-			<ul class="links__list">
-				<li
-					class="links__item"
-					v-for="link in links"
-					:key="link"
-					:class="{ 'links__item--active': link == 'Мы' }"
-					@click="navigateTo(link)">
-					{{ link }}
-				</li>
-			</ul>
-		</section>
 		<Footer />
+		<nav class="navbar">
+			<button
+				@click="navigateTo(name)"
+				class="navbar__button"
+				v-for="{ link, name, icon } in bottomNavLinks"
+				:key="name"
+				:class="{ 'navbar__button--active': name == activeLink }">
+				<component :is="icon"></component>
+				<span>{{ name }}</span>
+			</button>
+		</nav>
 	</main>
 </template>
 
@@ -103,25 +107,20 @@ import goalImg3 from '@/assets/images/goal-3.avif';
 import partnerImg1 from '@/assets/images/partner-1.avif';
 import partnerImg2 from '@/assets/images/partner-2.png';
 import Footer from '@/components/Footer.vue';
-import bigBg from '@/assets/images/big-bg.avif';
-import smallBg from '@/assets/images/small-bg.avif';
 import lenis from '@/js/lenis';
 import { onMounted, ref } from 'vue';
 import Particles from '@/components/Particles.vue';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Crown from '@/components/icons/Crown.vue';
+import Briefcase from '@/components/icons/Briefcase.vue';
+import Eye from '@/components/icons/Eye.vue';
+import Radar from '@/components/icons/Radar.vue';
+import Timer from '@/components/icons/Timer.vue';
 
-const missions = [
-	{
-		title: 'Миссия',
-		subtitle:
-			'Мы верим, что каждое сооружение должно не только эффективно выполнять свои задачи, но и вдохновлять.',
-		text: 'Миссией Tenet Group является создание новых стандартов жилого и коммерческого пространства, которые станут вектором для всей отрасли. Мы стремимся воплотить комфортные и современные пространства для жизни и работы людей, которые будут отражать их мечты и желания, а также соответствовать их ожиданиям о современной и продуманной недвижимости.'
-	},
-	{
-		title: 'Видение',
-		subtitle: 'Строительство для нас больше, чем создание физической инфраструктуры',
-		text: 'Мы нацелены на получении позиции лидера отрасли, создавая не просто здания, но и возможности для людей, поддерживая их ценности и укрепляя уверенность в будущем. Мы сотрудничаем с лучшими архитекторами и инженерами, чтобы гарантировать высокие стандарты строительства и долговечность наших объектов.'
-	}
-];
+gsap.registerPlugin(ScrollTrigger);
+
+const isBig = window.innerWidth > 500;
 const goals = [
 	{
 		title: 'Статус',
@@ -142,22 +141,84 @@ const goals = [
 		img: goalImg3
 	}
 ];
-const partnerImgs = [partnerImg1, partnerImg2, partnerImg1, partnerImg2, partnerImg1, partnerImg2];
+const partnerImgs = [partnerImg1, partnerImg2];
 const links = ['Мы', 'Миссия', 'Видение', 'Цели', 'Скоро'];
+const bottomNavLinks = [
+	{
+		name: 'Мы',
+		link: 'we',
+		icon: Crown
+	},
+	{
+		name: 'Миссия',
+		link: 'mission',
+		icon: Briefcase
+	},
+	{
+		name: 'Видение',
+		link: 'mission',
+		icon: Eye
+	},
+	{
+		name: 'Цели',
+		link: 'goals',
+		icon: Radar
+	},
+	{
+		name: 'Скоро',
+		link: 'soon',
+		icon: Timer
+	}
+];
 const linkMap = {
 	Миссия: 'mission',
 	Видение: 'mission',
 	Цели: 'goals',
-	Скоро: 'soon'
+	Скоро: 'soon',
+	Мы: 'we'
 };
-const mainRef = ref();
+const craeteInitialText = `Компания Tenet Group выходит за рамки привычного представления о девелопменте и
+					строительстве. Мы тщательно прорабатываем каждую деталь наших проектов, четко
+					осознавая как целостную природу строительства, так и значение каждой отдельной
+					части в создании единого сооружения.
+					<br />
+					<br />
+					Наши дома — это не просто стены и крыша, это фундамент для самых важных моментов
+					вашей жизни. Мы воплощаем пространства, где вы сможете созидать моменты счастья
+					и создавать историю, которая останется с вами навсегда.`;
 
+const missions = ref([
+	{
+		title: 'Миссия',
+		subtitle:
+			'Мы верим, что каждое сооружение должно не только эффективно выполнять свои задачи, но и вдохновлять.',
+		text: 'Миссией Tenet Group является создание новых стандартов жилого и коммерческого пространства, которые станут вектором для всей отрасли. Мы стремимся воплотить комфортные и современные пространства для жизни и работы людей, которые будут отражать их мечты и желания, а также соответствовать их ожиданиям о современной и продуманной недвижимости.',
+		fullText: false
+	},
+	{
+		title: 'Видение',
+		subtitle: 'Строительство для нас больше, чем создание физической инфраструктуры',
+		text: 'Мы нацелены на получении позиции лидера отрасли, создавая не просто здания, но и возможности для людей, поддерживая их ценности и укрепляя уверенность в будущем. Мы сотрудничаем с лучшими архитекторами и инженерами, чтобы гарантировать высокие стандарты строительства и долговечность наших объектов.',
+		fullText: false
+	}
+]);
+const createText = ref(craeteInitialText.slice(0, 150));
+const mainRef = ref();
+const activeLink = ref('Мы');
+
+const showOrCollapseCreateText = () =>
+	createText.value.length > 153
+		? (createText.value = createText.value.slice(0, 150) + '...')
+		: (createText.value = craeteInitialText);
 const navigateTo = linkName => {
-	lenis.scrollTo(document.getElementById(linkMap[linkName]), {
+	activeLink.value = linkName;
+	lenisScrollTo(document.getElementById(linkMap[linkName]));
+};
+const lenisScrollTo = name =>
+	lenis.scrollTo(name, {
 		duration: 1.2,
 		ease: 'power3.inOut'
 	});
-};
 
 onMounted(() => {
 	const observer = new IntersectionObserver(
@@ -177,28 +238,63 @@ onMounted(() => {
 	Array.from(mainRef.value.children).forEach(el => {
 		observer.observe(el);
 	});
+	gsap.to('.list', {
+		scrollTrigger: {
+			trigger: '.list',
+			pin: true,
+			endTrigger: '.main',
+			toggleClass: 'pinned'
+		}
+	});
 });
 </script>
 
 <style lang="scss" scoped>
-.links {
-	&__list {
-		list-style: none;
-		display: flex;
-		justify-content: space-between;
+.navbar {
+	padding: 1rem 0 !important;
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	display: flex;
+	justify-content: space-around;
+	background-color: #000;
+	box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
+	@media only screen and (min-width: 768px) {
+		display: none;
 	}
-	&__item {
-		color: rgba(0, 7, 18, 0.6);
-		font-size: 2.6rem;
-		font-weight: 500;
-		font-family: var(--font-roboto);
-		cursor: pointer;
+
+	&__button {
+		background-color: transparent;
+		border: none;
+		display: flex;
+		flex-direction: column;
+		color: #fff;
+		align-items: center;
+		gap: 3px;
+		font: inherit;
+		opacity: 0.4;
+		transition: opacity 500ms;
 		&--active {
-			color: #000;
+			opacity: 1;
 		}
 	}
 }
-
+.more-button {
+	cursor: pointer;
+	font-family: var(--font-roboto);
+	background-color: transparent;
+	border: none;
+	text-decoration: underline;
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: #000;
+	display: flex;
+	justify-content: flex-start;
+	padding: 1rem 0;
+	@media only screen and (min-width: 500px) {
+		display: none;
+	}
+}
 .partners {
 	display: flex;
 	flex-direction: column;
@@ -235,25 +331,9 @@ onMounted(() => {
 		transform: translateX(100%);
 		opacity: 0;
 		transition: opacity 0.5s, transform 0.5s;
-		&:not(:nth-child(2)):not(:first-child) {
-			@media only screen and (max-width: 768px) {
-				display: none;
-			}
-		}
+		height: 6rem;
 		&:nth-child(2) {
 			transition-delay: 150ms;
-		}
-		&:nth-child(3) {
-			transition-delay: 300ms;
-		}
-		&:nth-child(4) {
-			transition-delay: 450ms;
-		}
-		&:nth-child(5) {
-			transition-delay: 600ms;
-		}
-		&:nth-child(6) {
-			transition-delay: 750ms;
 		}
 		img {
 			width: 100%;
@@ -486,16 +566,16 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	margin: 5rem 0;
+	z-index: 10;
 	list-style: none;
+	transition: background-color 1s;
+	padding-top: 8px !important;
+	padding-bottom: 8px !important;
+	&.pinned {
+		background-color: rgba(255, 255, 255, 0.8);
+	}
 	@media only screen and (max-width: 768px) {
 		display: none;
-	}
-	&.active .list__item {
-		transform: translateX(0);
-		opacity: 0.7;
-		&--active {
-			opacity: 1;
-		}
 	}
 	&__item {
 		padding: 1.5rem 2rem;
@@ -504,25 +584,9 @@ onMounted(() => {
 		font-family: var(--font-gilroy);
 		font-weight: 700;
 		font-size: 20px;
-		opacity: 0;
+		opacity: 0.7;
 
-		transform: translateX(-500%);
-		transition: opacity 1s, transform 1s;
-		&:first-child {
-			transition-delay: 100ms;
-		}
-		&:nth-child(2) {
-			transition-delay: 200ms;
-		}
-		&:nth-child(3) {
-			transition-delay: 400ms;
-		}
-		&:nth-child(4) {
-			transition-delay: 600ms;
-		}
-		&:nth-child(5) {
-			transition-delay: 800ms;
-		}
+		transition: opacity 300ms, background-color 300ms, color 300ms;
 		&--active {
 			background-color: #000;
 			color: #fff;

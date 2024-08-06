@@ -37,6 +37,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 
 <style lang="scss" scoped>
 .footer {
+	margin-top: -5rem;
 	display: flex;
 	gap: 2rem;
 	flex-direction: column;
@@ -71,6 +72,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 		opacity: 0;
 		transform: translateY(-6rem);
 		transition-delay: 400ms;
+		text-transform: uppercase;
 	}
 	&__link svg {
 		width: 2.5rem;
