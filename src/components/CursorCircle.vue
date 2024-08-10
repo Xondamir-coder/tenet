@@ -1,5 +1,5 @@
 <template>
-	<div id="circle" class="circle"></div>
+	<div id="circle" class="circle" v-if="isOnPc"></div>
 </template>
 
 <script setup>
@@ -17,10 +17,26 @@ const updateMousePosition = event => {
 		duration: 0.2
 	});
 };
+const detectDevice = () => {
+	const userAgent = navigator.userAgent.toLowerCase();
+	const isMobile = /iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i.test(
+		userAgent
+	);
+	const isTablet = /ipad|android(?!.*mobile)|tablet|playbook/i.test(userAgent);
+
+	if (isMobile) {
+		return 'Mobile';
+	} else if (isTablet) {
+		return 'Tablet';
+	} else {
+		return 'PC/Laptop';
+	}
+};
+const isOnPc = detectDevice() == 'PC/Laptop';
 
 // Add and remove event listeners
 onMounted(() => {
-	// Initialize the position on mount
+	if (!isOnPc) return;
 	updateMousePosition({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
 
 	// Add mousemove event listener
@@ -28,11 +44,12 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+	if (!isOnPc) return;
 	window.removeEventListener('mousemove', updateMousePosition);
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .circle {
 	position: fixed;
 	z-index: 100;
@@ -43,6 +60,9 @@ onUnmounted(() => {
 	top: 0; /* Centering the circle */
 	left: 0; /* Centering the circle */
 	transform: translate(-50%, -50%);
-	backdrop-filter: invert(90%);
+	backdrop-filter: invert(80%);
+	@media only screen and (max-width: 1000px) {
+		display: none;
+	}
 }
 </style>
