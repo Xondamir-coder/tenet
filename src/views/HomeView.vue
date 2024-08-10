@@ -1,4 +1,5 @@
 <template>
+	<CursorCircle />
 	<main class="main" ref="mainRef">
 		<img class="pattern" src="@/assets/images/big-pattern.png" alt="" />
 		<Logo class="logo" />
@@ -29,15 +30,58 @@
 			</div>
 		</section>
 		<section class="boss">
-			<h1 class="boss__title">
-				«Даже кирпич хочет стать чем-то. Наша философия основана на том, что каждый элемент
-				архитектуры, даже самый простой, имеет потенциал стать частью чего-то более
-				значимого и красивого»
-			</h1>
-			<p class="boss__text">
-				Дониер Алимов <br />
-				Генеральный директор
-			</p>
+			<div class="boss__speech">
+				<svg
+					width="33"
+					height="25"
+					viewBox="0 0 33 25"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						d="M5.35654 24.3179H0L4.41127 11.7961H0.420121V0.317871H11.9734V10.6483L5.35654 24.3179Z"
+						fill="white" />
+					<path
+						d="M26.3831 24.3179H21.0266L25.4378 11.7961H21.4467V0.317871H33V10.6483L26.3831 24.3179Z"
+						fill="white" />
+				</svg>
+				<p class="boss__text">
+					Комфорт, безопасность, принадлежность, свобода — это основные потребности,
+					врожденные нам природой с самого рождения. Правильная архитектура служит
+					связующим звеном между человеком и бескрайними просторами природы, удовлетворяя
+					эти важные человеческие нужды.
+				</p>
+				<p class="boss__text">
+					Мы стремимся создавать пространства, которые не просто существуют, а живут в
+					гармонии с окружающим миром и с нашими будущими резидентами.
+				</p>
+			</div>
+			<div class="boss__image">
+				<div class="boss__image-container">
+					<img src="@/assets/images/boss.avif" alt="boss pic" />
+				</div>
+				<svg
+					class="boss__signature"
+					width="249"
+					height="231"
+					viewBox="0 0 249 231"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg">
+					<path
+						fill-rule="evenodd"
+						clip-rule="evenodd"
+						d="M154.034 97.4153C158.755 92.7937 163.692 86.9085 166.324 83.9214C167.158 85.0236 165.761 89.8831 171.937 85.0222C175.528 82.1956 183.594 73.6635 184.922 73.7683C185.838 73.8409 184.798 74.3032 186.498 74.074C187.206 73.9778 187.854 73.597 188.468 73.2024C189.862 72.3062 190.804 71.1907 191.987 70.3018C191.495 74.5424 185.426 102.72 197.442 98.1537C200.445 97.0123 204.008 92.817 203.531 90.1086C200.883 88.649 200.249 93.484 197.798 94.8265C189.477 99.3842 191.109 79.7092 193.312 71.5678C194.051 68.8347 194.31 69.8593 195.374 68.0186L199.907 54.3078C201.376 49.6948 205.104 39.3504 204.284 35.2897C201.106 36.2056 199.681 41.4525 198.067 46.8175C196.717 51.2937 195.231 56.0867 194.26 60.685C188.126 63.1456 189.559 64.3857 181.955 72.7524C179.137 75.8554 172.582 82.4198 169.007 84.4921C170.073 78.6576 172.942 79.4021 174.83 76.7591C181.177 67.8757 178.258 65.5875 173.46 71.5789L161.67 85.6608C158.055 89.8511 149.825 100.785 144.501 101.754V101.931C129.819 106.379 150.287 86.1478 153.343 80.6879C155.418 76.9821 156.91 73.8905 158.757 69.7814C159.718 67.644 163.668 60.0931 162.272 58.4733C159.909 56.0867 153.755 69.4129 152.201 72.3246C148.358 79.5289 148.327 81.3943 145.607 85.5265C145.143 85.7582 144.682 86.0023 144.228 86.2574C138.226 94.8857 130.509 107.841 142.99 104.803C147.24 103.767 153.589 99.9621 154.243 97.5079C154.174 97.472 154.104 97.4426 154.034 97.4153ZM211.103 62.6377C210.565 56.0558 211.136 59.5397 207.588 57.9443C203.393 56.0569 199.241 64.7815 201.026 66.5356C202.416 67.6598 202.923 66.3051 204.614 65.3806C206.312 64.4511 206.551 64.8641 208.468 63.5633C210.506 66.1338 212.63 64.7938 217.771 61.919L247.881 44.3901C249.661 42.7419 249.35 40.6843 246.716 41.742C239.551 44.6217 218.774 60.1671 211.103 62.6377Z"
+						fill="white" />
+					<path
+						fill-rule="evenodd"
+						clip-rule="evenodd"
+						d="M124.006 136.974C116.344 125.662 124.016 113.828 131.239 108.869C131.322 117.667 133.399 117.141 130.528 124.13C129.353 126.994 128.616 128.741 127.382 131.562L124.006 136.974ZM154.815 5.34955C155.438 5.34955 153.159 12.9705 149.722 22.3709C148.995 24.3621 148.275 26.2706 147.584 28.0456C146.329 31.5961 144.955 35.4157 143.501 39.3957C141.364 45.2375 139.306 50.7358 137.464 55.5407C136.924 57.2531 136.255 59.2153 135.494 61.299C133.042 68.0047 130.548 73.4418 129.926 73.4418C129.303 73.4418 130.781 68.0047 133.234 61.299C133.995 59.2153 134.762 57.2531 135.474 55.5407C137.146 50.7358 139.104 45.2375 141.241 39.3957C142.695 35.4157 144.115 31.5961 145.455 28.0456C146.059 26.2706 146.737 24.3621 147.462 22.3709C150.9 12.9705 154.191 5.34955 154.815 5.34955ZM138.423 105.052L135.321 110.561C135.147 110.254 134.427 111.21 133.991 111.551C135.508 103.742 135.887 106.81 138.423 105.052ZM123.938 109.026C124.196 101.947 125.729 97.6594 127.864 91.9403C129.931 95.7487 130.675 99.0084 130.762 103.762L123.938 109.026ZM120.559 89.8477C116.008 105.72 109.739 118.669 117.383 143.649C123.798 164.613 34.7011 264.503 9.49774 213.05C-7.78676 177.763 17.4255 131.545 35.3085 112.67C70.911 75.0961 128.231 63.0882 120.559 89.8477ZM125.147 75.3558C117.383 74.6091 118.477 72.4049 104.836 72.4049C58.7716 72.4049 1.00513 124.804 0.0127681 187.475C-0.991549 250.839 57.4605 241.45 101.877 181.014C113.152 165.672 115.289 159.376 124.467 145.877C129.575 138.362 131.059 140.653 134.329 127.969C136.944 117.823 141.366 114.924 141.391 103.791C136.769 97.6561 132.703 102.727 131.317 89.3763C129.882 75.5578 166.726 4.28712 156.428 0.347442C147.647 -1.25819 128.345 63.0045 125.147 75.3558Z"
+						fill="white" />
+				</svg>
+			</div>
+			<div class="boss__id">
+				<h1 class="boss__name">Дониер Алимов</h1>
+				<p class="boss__job">Генеральный директор</p>
+			</div>
 		</section>
 		<section id="mission" class="mission">
 			<div class="mission__box" v-for="mission in missions" :key="mission.title">
@@ -117,6 +161,7 @@ import Briefcase from '@/components/icons/Briefcase.vue';
 import Eye from '@/components/icons/Eye.vue';
 import Radar from '@/components/icons/Radar.vue';
 import Timer from '@/components/icons/Timer.vue';
+import CursorCircle from '@/components/CursorCircle.vue';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -466,30 +511,103 @@ onMounted(() => {
 	}
 }
 .boss {
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-	&.active > * {
-		transform: translateY(0);
-		opacity: 1;
+	background-color: black;
+	color: white;
+	display: grid;
+	grid-template-areas: 'speech speech pic id';
+	gap: 7rem;
+	padding-top: 3rem !important;
+	padding-bottom: 3rem !important;
+	font-family: var(--font-roboto);
+	&.active {
+		.boss__id,
+		.boss__speech {
+			transform: translateX(0);
+			opacity: 1;
+		}
+		.boss__image-container,
+		.boss__signature {
+			scale: 1;
+		}
 	}
-	& > * {
-		transform: translateY(-4rem);
-		opacity: 0;
-		transition: transform 0.7s, opacity 0.7s;
+
+	@media only screen and (max-width: 1200px) {
+		grid-template-areas:
+			'speech'
+			'pic'
+			'id';
+	}
+	&__signature {
+		position: absolute;
+		right: -3rem;
+		bottom: 5rem;
+		width: 24.9rem;
+		height: 23rem;
+		scale: 0;
+		transition: scale 0.5s 200ms;
+		@media only screen and (max-width: 1200px) {
+			right: 0;
+			bottom: -10rem;
+		}
 	}
 	&__text {
-		line-height: 1.4;
-		font-size: 2.4rem;
-		font-weight: 500;
-		font-style: italic;
-		transition-delay: 300ms;
+		font-size: 16px;
 	}
-	&__title {
-		font-family: var(--font-roboto);
-		font-size: 3.2rem;
-		font-weight: bold;
-		line-height: 1.5;
+	&__id {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		gap: 5px;
+		font-style: italic;
+	}
+	&__name {
+		font-size: 22px;
+		font-weight: 700;
+	}
+	&__job {
+		font-size: 18px;
+		font-weight: 400;
+	}
+	&__speech {
+		grid-area: speech;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		transform: translateX(-100%);
+		opacity: 0;
+		transition: opacity 1s, transform 1s;
+	}
+	&__image {
+		grid-area: pic;
+		position: relative;
+		display: flex;
+		padding-right: 15rem;
+		@media only screen and (max-width: 1200px) {
+			padding-right: 0;
+		}
+		&-container {
+			background-color: #fff;
+			border-radius: 50%;
+			transform: translateY(-30px) scale(1.3);
+			scale: 0;
+			transition: scale 0.5s;
+			@media only screen and (max-width: 1200px) {
+				transform: none;
+			}
+		}
+		img {
+			transform: scale(0.95);
+			border-radius: 50%;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+	&__id {
+		grid-area: id;
+		transform: translateX(200%);
+		opacity: 0;
+		transition: opacity 1s, transform 1s;
 	}
 }
 .create {
@@ -610,6 +728,7 @@ onMounted(() => {
 	top: 10rem;
 	width: 100%;
 	padding: 0 !important;
+	z-index: -1;
 	@media only screen and (max-width: 500px) {
 		top: -8rem;
 		width: 300%;

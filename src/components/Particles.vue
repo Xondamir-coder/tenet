@@ -70,8 +70,8 @@ onMounted(() => {
 
 	const sections = [
 		{
-			xRange: [-200, 20],
-			yRange: [50, 60],
+			xRange: [-150, -50], // Narrower range to keep particles closer
+			yRange: [60, 80], // Narrower range to limit vertical movement
 			particles: [],
 			positions: [
 				[-40, 50, 80],
@@ -90,7 +90,27 @@ onMounted(() => {
 			]
 		},
 		{
-			xRange: [-100, 220],
+			xRange: [-200, -20], // Adjusted to stay away from center
+			yRange: [-5, 0],
+			particles: [],
+			positions: [
+				[-100, 3, 80],
+				[-130, 0, 80],
+				[-150, 10, 80],
+				[-190, 20, 80],
+				[-170, -10, 80],
+				[-200, -10, 80]
+			],
+			connections: [
+				[0, 1],
+				[1, 2],
+				[2, 3],
+				[3, 4],
+				[4, 5]
+			]
+		},
+		{
+			xRange: [20, 200], // Adjusted to stay away from center
 			yRange: [50, 100],
 			particles: [],
 			positions: [
@@ -110,27 +130,7 @@ onMounted(() => {
 			]
 		},
 		{
-			xRange: [-200, -100],
-			yRange: [-5, 0],
-			particles: [],
-			positions: [
-				[-100, 3, 80],
-				[-130, -30, 80],
-				[-150, 10, 80],
-				[-190, 20, 80],
-				[-170, -10, 80],
-				[-200, -10, 80]
-			],
-			connections: [
-				[0, 1],
-				[1, 2],
-				[2, 3],
-				[3, 4],
-				[4, 5]
-			]
-		},
-		{
-			xRange: [100, 200],
+			xRange: [20, 200], // Adjusted to stay away from center
 			yRange: [-50, 30],
 			particles: [],
 			positions: [
@@ -196,8 +196,8 @@ onMounted(() => {
 			scene.add(particle);
 
 			const particleIndex = particles.indexOf(particle);
-			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.4;
-			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.4;
+			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.04; // Was 0.4
+			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.04; // Was 0.4
 			particleVelocities[particleIndex * 3 + 2] = 0;
 
 			if (i < labeledCount) {
@@ -241,13 +241,21 @@ onMounted(() => {
 				const positions = particle.geometry.attributes.position.array;
 				const particleIndex = particles.indexOf(particle);
 
-				positions[0] += particleVelocities[particleIndex * 3] * 0.08;
-				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.08;
+				positions[0] += particleVelocities[particleIndex * 3] * 0.1;
+				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.1;
 
-				if (positions[0] > section.xRange[1] || positions[0] < section.xRange[0])
+				// Updated boundary checks to ensure particles stay within their section and avoid center
+				if (
+					positions[0] > section.xRange[1] ||
+					positions[0] < section.xRange[0] ||
+					(positions[0] > -20 && positions[0] < 20) // Prevent crossing the center
+				) {
 					particleVelocities[particleIndex * 3] *= -1;
-				if (positions[1] > section.yRange[1] || positions[1] < section.yRange[0])
+				}
+
+				if (positions[1] > section.yRange[1] || positions[1] < section.yRange[0]) {
 					particleVelocities[particleIndex * 3 + 1] *= -1;
+				}
 
 				particle.geometry.attributes.position.needsUpdate = true;
 

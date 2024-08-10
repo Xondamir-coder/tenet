@@ -18,8 +18,8 @@
 		</div>
 		<p class="footer__tenet">Tenet group {{ new Date().getFullYear() }}</p>
 		<p class="footer__text">
-			Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-			has been the industry's standard dummy text ever since
+			&copy; {{ new Date().getFullYear() }} TENET GROUP ALL RIGHTS RESERVED. Developed by
+			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>
 		</p>
 	</footer>
 </template>
@@ -65,6 +65,10 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 		opacity: 0;
 		transform: translateY(-6rem);
 		transition-delay: 600ms;
+		text-transform: uppercase;
+		a {
+			color: inherit;
+		}
 	}
 	&__tenet {
 		font-family: var(--font-roboto);
