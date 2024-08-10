@@ -52,16 +52,18 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .circle {
 	position: fixed;
-	z-index: 100;
-	width: 71px;
-	height: 71px;
+	z-index: -1;
+	width: 100px;
+	height: 100px;
 	border-radius: 50%;
 	pointer-events: none;
 	top: 0; /* Centering the circle */
 	left: 0; /* Centering the circle */
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	background: red;
+	backdrop-filter: contrast(100);
+	mix-blend-mode: screen;
+
 	@media only screen and (max-width: 1000px) {
 		display: none;
 	}

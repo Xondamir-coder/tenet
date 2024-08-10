@@ -728,8 +728,8 @@ onMounted(() => {
 	top: 10rem;
 	width: 100%;
 	padding: 0 !important;
-	z-index: -1;
-	opacity: 0.1;
+	z-index: -2;
+	filter: opacity(0.1);
 	@media only screen and (max-width: 500px) {
 		top: -8rem;
 		width: 300%;
