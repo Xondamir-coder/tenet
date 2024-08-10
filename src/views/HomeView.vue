@@ -1,7 +1,7 @@
 <template>
 	<CursorCircle />
 	<main class="main" ref="mainRef">
-		<img class="pattern" src="@/assets/images/big-pattern.png" alt="" />
+		<img class="pattern" src="@/assets/pattern.jpg" alt="" />
 		<Logo class="logo" />
 		<ul class="list">
 			<li
@@ -729,6 +729,7 @@ onMounted(() => {
 	width: 100%;
 	padding: 0 !important;
 	z-index: -1;
+	opacity: 0.1;
 	@media only screen and (max-width: 500px) {
 		top: -8rem;
 		width: 300%;

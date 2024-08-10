@@ -60,7 +60,8 @@ onUnmounted(() => {
 	top: 0; /* Centering the circle */
 	left: 0; /* Centering the circle */
 	transform: translate(-50%, -50%);
-	backdrop-filter: invert(80%);
+	pointer-events: none;
+	background: red;
 	@media only screen and (max-width: 1000px) {
 		display: none;
 	}
