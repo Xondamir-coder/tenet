@@ -52,7 +52,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .circle {
 	position: fixed;
-	z-index: -1;
+	z-index: 1;
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
@@ -61,8 +61,10 @@ onUnmounted(() => {
 	left: 0; /* Centering the circle */
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	backdrop-filter: contrast(100);
-	mix-blend-mode: screen;
+	-webkit-backdrop-filter: contrast(100); /* For Safari */
+	backdrop-filter: contrast(100); /* For other modern browsers */
+	-webkit-mix-blend-mode: screen; /* For Safari */
+	mix-blend-mode: screen; /* For other modern browsers */
 
 	@media only screen and (max-width: 1000px) {
 		display: none;

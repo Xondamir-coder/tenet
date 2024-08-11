@@ -16,7 +16,6 @@
 				</li>
 			</ul>
 		</div>
-		<p class="footer__tenet">Tenet group {{ new Date().getFullYear() }}</p>
 		<p class="footer__text">
 			&copy; {{ new Date().getFullYear() }} TENET GROUP ALL RIGHTS RESERVED. Developed by
 			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>

@@ -615,6 +615,17 @@ onMounted(() => {
 	align-items: flex-start;
 	gap: 2rem;
 	margin-bottom: 5rem;
+	cursor: none;
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		cursor: text;
+	}
 	@media only screen and (max-width: 1000px) {
 		flex-direction: column;
 	}
@@ -635,6 +646,7 @@ onMounted(() => {
 	&__left {
 		line-height: 0.7;
 		display: flex;
+		align-items: flex-start;
 		flex-direction: column;
 		gap: 2rem;
 	}
@@ -689,6 +701,7 @@ onMounted(() => {
 	transition: background-color 1s;
 	padding-top: 8px !important;
 	padding-bottom: 8px !important;
+	cursor: none;
 	&.pinned {
 		background-color: rgba(255, 255, 255, 0.8);
 	}
@@ -728,7 +741,7 @@ onMounted(() => {
 	top: 10rem;
 	width: 100%;
 	padding: 0 !important;
-	z-index: -2;
+	z-index: 0;
 	filter: opacity(0.1);
 	@media only screen and (max-width: 500px) {
 		top: -8rem;
@@ -754,6 +767,9 @@ onMounted(() => {
 		@media only screen and (max-width: 400px) {
 			padding: 0 2rem;
 		}
+	}
+	& > *:not(.list):not(.logo):not(.pattern) {
+		z-index: 2;
 	}
 }
 </style>
