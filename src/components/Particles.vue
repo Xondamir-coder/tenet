@@ -11,6 +11,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import * as THREE from 'three';
 import circleUrl from '@/assets/circle.png';
+import sunUrl from '@/assets/sun.png';
 import bigParticleBg from '@/assets/images/particle-bg.avif';
 import smallParticleBg from '@/assets/images/small-particle-bg.jpg';
 
@@ -52,13 +53,14 @@ onMounted(() => {
 	renderer.setClearAlpha(0.0);
 	sceneContainer.value.appendChild(renderer.domElement);
 
-	// Load star texture
+	// Load star and sun textures
 	const textureLoader = new THREE.TextureLoader();
 	const starTexture = textureLoader.load(circleUrl);
+	const sunTexture = textureLoader.load(sunUrl);
 
 	const labeledParticleCount = 3;
 	const extraLabeledParticleCount = 2;
-	const unnamedParticleCount = 3;
+	const unnamedParticleCount = 6; // Updated to reflect the 3 additional particles
 	const totalSections = 4;
 	const totalParticleCount =
 		labeledParticleCount * (totalSections - 1) +
@@ -74,19 +76,25 @@ onMounted(() => {
 			yRange: [60, 80], // Narrower range to limit vertical movement
 			particles: [],
 			positions: [
-				[-40, 50, 80],
-				[-70, 80, 80],
-				[-130, 70, 80],
-				[-120, 60, 80],
-				[-170, 50, 80],
-				[-190, 80, 80]
+				[-40, 70, 80],
+				[-70, 75, 80],
+				[-90, 60, 80],
+				[-110, 90, 80],
+				[-130, 85, 80],
+				[-150, 80, 80],
+				[-170, 55, 80], // New particle
+				[-190, 70, 80], // New particle
+				[-250, 80, 80] // New particle
 			],
 			connections: [
 				[0, 1],
 				[1, 2],
 				[2, 3],
 				[3, 4],
-				[4, 5]
+				[4, 5],
+				[5, 6], // New connection
+				[6, 7], // New connection
+				[7, 8] // New connection
 			]
 		},
 		{
@@ -94,19 +102,25 @@ onMounted(() => {
 			yRange: [-5, 0],
 			particles: [],
 			positions: [
-				[-100, 3, 80],
-				[-130, 0, 80],
-				[-150, 10, 80],
-				[-190, 20, 80],
-				[-170, -10, 80],
-				[-200, -10, 80]
+				[-40, 3, 80],
+				[-80, 0, 80],
+				[-100, 20, 80],
+				[-140, 30, 80],
+				[-120, -10, 80],
+				[-150, -15, 80],
+				[-170, 5, 80], // New particle
+				[-180, 20, 80], // New particle
+				[-190, 15, 80] // New particle
 			],
 			connections: [
 				[0, 1],
 				[1, 2],
 				[2, 3],
 				[3, 4],
-				[4, 5]
+				[4, 5],
+				[5, 6], // New connection
+				[6, 7], // New connection
+				[7, 8] // New connection
 			]
 		},
 		{
@@ -115,33 +129,42 @@ onMounted(() => {
 			particles: [],
 			positions: [
 				[40, 70, 80],
-				[70, 50, 80],
-				[100, 60, 80],
-				[130, 55, 80],
-				[180, 60, 80],
-				[190, 80, 80]
+				[70, 70, 80],
+				[80, 50, 80],
+				[100, 52, 80],
+				[120, 70, 80],
+				[140, 80, 80],
+				[155, 83, 80], // New particle
+				[170, 90, 80], // New particle
+				[185, 80, 80] // New particle
 			],
 			connections: [
 				[0, 1],
 				[1, 2],
 				[2, 3],
 				[3, 4],
-				[4, 5]
+				[4, 5],
+				[5, 6], // New connection
+				[6, 7], // New connection
+				[7, 8] // New connection
 			]
 		},
 		{
-			xRange: [20, 200], // Adjusted to stay away from center
+			xRange: [20, 250], // Adjusted to stay away from center
 			yRange: [-50, 30],
 			particles: [],
 			positions: [
 				[50, 15, 80],
 				[80, -5, 80],
 				[100, 10, 80],
-				[120, 40, 80],
-				[180, 25, 80],
-				[120, -5, 80],
-				[140, 5, 80],
-				[160, 15, 80]
+				[120, 20, 80],
+				[140, 25, 80],
+				[150, -5, 80],
+				[160, 5, 80],
+				[170, 15, 80],
+				[190, 20, 80], // New particle
+				[210, 10, 80], // New particle
+				[230, 5, 80] // New particle
 			],
 			connections: [
 				[0, 1],
@@ -150,7 +173,10 @@ onMounted(() => {
 				[3, 4],
 				[4, 5],
 				[5, 6],
-				[6, 7]
+				[6, 7],
+				[7, 8], // New connection
+				[8, 9], // New connection
+				[9, 10] // New connection
 			]
 		}
 	];
@@ -168,6 +194,7 @@ onMounted(() => {
 
 	const originalPositions = [];
 	const originalSizes = [];
+
 	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
 		// Determine the rightmost and leftmost positions for normalization
 		const rightmostX = Math.max(...section.positions.map(pos => pos[0]));
@@ -183,16 +210,24 @@ onMounted(() => {
 			}
 
 			let particleSize;
+			let texture; // Declare a variable to hold the texture
+
+			// Randomly assign the texture
+			if (Math.random() > 0.5) {
+				texture = starTexture;
+			} else {
+				texture = sunTexture;
+			}
 
 			// Determine if this section is on the left or right side of the canvas
 			if (section.xRange[0] < 0) {
 				// Left side: Bigger on the right, smaller on the left
 				const normalizedX = (x - leftmostX) / (rightmostX - leftmostX);
-				particleSize = 5 + (28 - 5) * normalizedX; // Increased size range
+				particleSize = 5 + (15 - 5) * normalizedX; // Adjusted size range
 			} else {
 				// Right side: Bigger on the left, smaller on the right
 				const normalizedX = (x - leftmostX) / (rightmostX - leftmostX);
-				particleSize = 28 - (28 - 5) * normalizedX; // Increased size range
+				particleSize = 15 - (15 - 5) * normalizedX; // Adjusted size range
 			}
 
 			originalSizes.push(particleSize);
@@ -201,7 +236,7 @@ onMounted(() => {
 			const particlesMaterial = new THREE.PointsMaterial({
 				size: particleSize,
 				sizeAttenuation: true,
-				alphaMap: starTexture,
+				alphaMap: texture, // Use the randomly assigned texture
 				transparent: true,
 				depthWrite: false,
 				blending: THREE.AdditiveBlending
@@ -277,12 +312,10 @@ onMounted(() => {
 
 				// If the particle moves too far from its original position, reverse the velocity
 				if (Math.abs(distanceX) > 10) {
-					// Adjust the '10' to control how far they can move
 					particleVelocities[particleIndex * 3] *= -1;
 				}
 
 				if (Math.abs(distanceY) > 10) {
-					// Adjust the '10' to control how far they can move
 					particleVelocities[particleIndex * 3 + 1] *= -1;
 				}
 
@@ -343,8 +376,6 @@ onMounted(() => {
 			material.needsUpdate = true;
 		});
 	};
-
-	window.addEventListener('resize', onWindowResize);
 
 	window.addEventListener('resize', onWindowResize);
 
