@@ -168,10 +168,33 @@ onMounted(() => {
 
 	const originalPositions = [];
 	const originalSizes = [];
-
 	const placeParticlesInSection = (section, labeledCount, unnamedCount) => {
+		// Determine the rightmost and leftmost positions for normalization
+		const rightmostX = Math.max(...section.positions.map(pos => pos[0]));
+		const leftmostX = Math.min(...section.positions.map(pos => pos[0]));
+
 		for (let i = 0; i < labeledCount + unnamedCount; i++) {
-			const particleSize = Math.random() * 10 + 10;
+			const [x, y, z] = section.positions[i];
+
+			// Check if any position is NaN and log it
+			if (isNaN(x) || isNaN(y) || isNaN(z)) {
+				console.error(`NaN value found in positions: x=${x}, y=${y}, z=${z}`);
+				continue; // Skip this iteration if NaN is found
+			}
+
+			let particleSize;
+
+			// Determine if this section is on the left or right side of the canvas
+			if (section.xRange[0] < 0) {
+				// Left side: Bigger on the right, smaller on the left
+				const normalizedX = (x - leftmostX) / (rightmostX - leftmostX);
+				particleSize = 5 + (28 - 5) * normalizedX; // Increased size range
+			} else {
+				// Right side: Bigger on the left, smaller on the right
+				const normalizedX = (x - leftmostX) / (rightmostX - leftmostX);
+				particleSize = 28 - (28 - 5) * normalizedX; // Increased size range
+			}
+
 			originalSizes.push(particleSize);
 
 			const particlesGeometry = new THREE.BufferGeometry();
@@ -184,8 +207,8 @@ onMounted(() => {
 				blending: THREE.AdditiveBlending
 			});
 
-			const particlePositions = new Float32Array(section.positions[i]);
-			originalPositions.push([...section.positions[i]]);
+			const particlePositions = new Float32Array([x, y, z]);
+			originalPositions.push([x, y, z]);
 			particlesGeometry.setAttribute(
 				'position',
 				new THREE.BufferAttribute(particlePositions, 3)
@@ -196,8 +219,8 @@ onMounted(() => {
 			scene.add(particle);
 
 			const particleIndex = particles.indexOf(particle);
-			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.8; // Was 0.4
-			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.8; // Was 0.4
+			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.8;
+			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.8;
 			particleVelocities[particleIndex * 3 + 2] = 0;
 
 			if (i < labeledCount) {
@@ -241,19 +264,25 @@ onMounted(() => {
 				const positions = particle.geometry.attributes.position.array;
 				const particleIndex = particles.indexOf(particle);
 
-				positions[0] += particleVelocities[particleIndex * 3] * 0.1;
-				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.1;
+				// Adjust velocity to be smaller
+				positions[0] += particleVelocities[particleIndex * 3] * 0.05; // Reduced speed
+				positions[1] += particleVelocities[particleIndex * 3 + 1] * 0.05; // Reduced speed
 
-				// Updated boundary checks to ensure particles stay within their section and avoid center
-				if (
-					positions[0] > section.xRange[1] ||
-					positions[0] < section.xRange[0] ||
-					(positions[0] > -20 && positions[0] < 20) // Prevent crossing the center
-				) {
+				// Constraint to keep particles close to their original position
+				const originalX = originalPositions[particleIndex][0];
+				const originalY = originalPositions[particleIndex][1];
+
+				const distanceX = positions[0] - originalX;
+				const distanceY = positions[1] - originalY;
+
+				// If the particle moves too far from its original position, reverse the velocity
+				if (Math.abs(distanceX) > 10) {
+					// Adjust the '10' to control how far they can move
 					particleVelocities[particleIndex * 3] *= -1;
 				}
 
-				if (positions[1] > section.yRange[1] || positions[1] < section.yRange[0]) {
+				if (Math.abs(distanceY) > 10) {
+					// Adjust the '10' to control how far they can move
 					particleVelocities[particleIndex * 3 + 1] *= -1;
 				}
 
