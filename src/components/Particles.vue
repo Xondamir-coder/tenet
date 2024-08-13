@@ -196,8 +196,8 @@ onMounted(() => {
 			scene.add(particle);
 
 			const particleIndex = particles.indexOf(particle);
-			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.04; // Was 0.4
-			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.04; // Was 0.4
+			particleVelocities[particleIndex * 3] = (Math.random() - 0.5) * 0.8; // Was 0.4
+			particleVelocities[particleIndex * 3 + 1] = (Math.random() - 0.5) * 0.8; // Was 0.4
 			particleVelocities[particleIndex * 3 + 2] = 0;
 
 			if (i < labeledCount) {
