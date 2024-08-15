@@ -1,20 +1,15 @@
 <template>
 	<div class="pattern__container">
-		<img class="pattern" src="@/assets/pattern-top.avif" alt="" />
-		<img class="pattern" src="@/assets/small-pattern.avif" alt="" />
-		<img class="pattern" src="@/assets/small-pattern.avif" alt="" />
-		<img class="pattern" src="@/assets/small-pattern.avif" alt="" />
-		<img class="pattern" src="@/assets/small-pattern.avif" alt="" />
+		<Pattern />
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import Pattern from '@/components/Pattern.vue';
+</script>
 
 <style lang="scss" scoped>
 .pattern {
-	width: 100%;
-	object-fit: cover;
-
 	&__container {
 		cursor: none;
 		position: absolute;
