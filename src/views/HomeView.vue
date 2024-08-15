@@ -2,8 +2,8 @@
 	<CursorCircle />
 	<main class="main" ref="mainRef">
 		<BgPattern />
-		<Logo class="logo" />
-		<ul class="list">
+		<Logo class="logo section-padding" />
+		<ul class="list section-padding">
 			<li
 				@click="navigateTo(link)"
 				class="list__item"
@@ -13,15 +13,15 @@
 				{{ link }}
 			</li>
 		</ul>
-		<section id="we" class="create">
+		<section id="we" class="create section-padding">
 			<div class="create__left">
 				<p class="create__big">Создаём</p>
 				<p class="create__massive">Каноны</p>
 			</div>
 			<div class="create__right">
 				<h1 class="create__right-title">
-					TENET GROUP – Согласны ли вы с тем, что будущее – это не то, что нас ждет, а то,
-					что мы создаем?
+					Согласны ли вы с тем, что будущее – это не то, что нас ждет, а то, что мы
+					создаем?
 				</h1>
 				<p class="create__right-text" v-html="createText"></p>
 				<button class="more-button" @click="showOrCollapseCreateText" type="button">
@@ -29,42 +29,7 @@
 				</button>
 			</div>
 		</section>
-		<section class="boss">
-			<svg
-				width="33"
-				height="25"
-				viewBox="0 0 33 25"
-				fill="none"
-				xmlns="http://www.w3.org/2000/svg">
-				<path
-					d="M5.35654 24.3179H0L4.41127 11.7961H0.420121V0.317871H11.9734V10.6483L5.35654 24.3179Z"
-					fill="white" />
-				<path
-					d="M26.3831 24.3179H21.0266L25.4378 11.7961H21.4467V0.317871H33V10.6483L26.3831 24.3179Z"
-					fill="white" />
-			</svg>
-			<div class="boss__content">
-				<div class="boss__speech">
-					<p class="boss__text">
-						Комфорт, безопасность, принадлежность, свобода — это основные потребности,
-						врожденные нам природой с самого рождения. Правильная архитектура служит
-						связующим звеном между человеком и бескрайними просторами природы,
-						удовлетворяя эти важные человеческие нужды.
-					</p>
-				</div>
-				<div class="boss__speech">
-					<p class="boss__text">
-						Мы стремимся создавать пространства, которые не просто существуют, а живут в
-						гармонии с окружающим миром и с нашими будущими резидентами.
-					</p>
-				</div>
-			</div>
-			<div class="boss__id">
-				<h1 class="boss__name">Дониер Алимов</h1>
-				<p class="boss__job">Генеральный директор</p>
-			</div>
-		</section>
-		<section id="mission" class="mission">
+		<section id="mission" class="mission section-padding">
 			<div class="mission__box" v-for="mission in missions" :key="mission.title">
 				<h1 class="mission__title">
 					{{ mission.title }}
@@ -85,32 +50,9 @@
 				</button>
 			</div>
 		</section>
-		<section id="goals" class="goals">
-			<h1 class="goals__title">Цели</h1>
-			<div class="goals__container">
-				<div class="goals__box" v-for="goal in goals" :key="goal.img">
-					<div class="goals__box-banner">
-						<img :src="goal.img" :alt="goal.title" />
-						<div class="goals__box-content">
-							<h2 class="goals__box-title">{{ goal.title }}</h2>
-							<h3 class="goals__box-subtitle">{{ goal.subtitle }}</h3>
-						</div>
-					</div>
-					<p class="goals__box-text">{{ goal.text }}</p>
-				</div>
-			</div>
-		</section>
-		<section class="partners">
-			<h1 class="partners__title">Наши партнёры</h1>
-			<ul class="partners__list">
-				<li class="partners__item" v-for="partnerImg in partnerImgs" :key="partnerImg">
-					<img :src="partnerImg" alt="partner img" />
-				</li>
-			</ul>
-		</section>
-		<Particles />
+		<Soon />
 		<Footer />
-		<nav class="navbar">
+		<nav class="navbar section-padding">
 			<button
 				@click="navigateTo(name)"
 				class="navbar__button"
@@ -126,15 +68,9 @@
 
 <script setup>
 import Logo from '@/components/icons/Logo.vue';
-import goalImg1 from '@/assets/images/goal-1.avif';
-import goalImg2 from '@/assets/images/goal-2.avif';
-import goalImg3 from '@/assets/images/goal-3.avif';
-import partnerImg1 from '@/assets/images/partner-1.avif';
-import partnerImg2 from '@/assets/images/partner-2.png';
 import Footer from '@/components/Footer.vue';
 import lenis from '@/js/lenis';
 import { onMounted, ref } from 'vue';
-import Particles from '@/components/Particles.vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Crown from '@/components/icons/Crown.vue';
@@ -144,35 +80,15 @@ import Radar from '@/components/icons/Radar.vue';
 import Timer from '@/components/icons/Timer.vue';
 import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
+import Soon from '@/components/Soon.vue';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const isBig = window.innerWidth > 500;
-const goals = [
-	{
-		title: 'Статус',
-		subtitle: 'лидера',
-		text: 'Мы нацелены на достижение позиции лидера на рынке недвижимости, постоянно расширяя наше присутствие и предлагая инновационные продукты, которые будут превосходить ожидания клиентов.',
-		img: goalImg1
-	},
-	{
-		title: 'Надежность',
-		subtitle: 'и вдохновение',
-		text: 'Мы стремимся выходить за привычные рамки, создавая пространства, которые смогут не только отлично выполнять свою практическую функцию, но и будут иметь значимую ценность, вдохновляя на развитие и улучшая качество жизни.',
-		img: goalImg2
-	},
-	{
-		title: 'Довольство',
-		subtitle: 'клиентов',
-		text: 'Мы ориентируемся на потребности и желания наших клиентов, обеспечивая высокий уровень обслуживания и индивидуальный подход. Мы стремимся превзойти их ожидания, создавая пространства, где люди чувствуют себя счастливыми и защищенными.',
-		img: goalImg3
-	}
-];
-const partnerImgs = [partnerImg1, partnerImg2];
-const links = ['Мы', 'Миссия', 'Видение', 'Цели', 'Скоро'];
+const isBig = window.innerWidth >= 500;
+const links = ['О компании', 'Миссия', 'Видение', 'Цели', 'Скоро'];
 const bottomNavLinks = [
 	{
-		name: 'Мы',
+		name: 'О компании',
 		link: 'we',
 		icon: Crown
 	},
@@ -188,7 +104,7 @@ const bottomNavLinks = [
 	},
 	{
 		name: 'Цели',
-		link: 'goals',
+		link: 'mission',
 		icon: Radar
 	},
 	{
@@ -200,9 +116,9 @@ const bottomNavLinks = [
 const linkMap = {
 	Миссия: 'mission',
 	Видение: 'mission',
-	Цели: 'goals',
+	Цели: 'mission',
 	Скоро: 'soon',
-	Мы: 'we'
+	'О компании': 'we'
 };
 const craeteInitialText = `Компания Tenet Group выходит за рамки привычного представления о девелопменте и
 					строительстве. Мы тщательно прорабатываем каждую деталь наших проектов, четко
@@ -227,11 +143,17 @@ const missions = ref([
 		subtitle: 'Строительство для нас больше, чем создание физической инфраструктуры',
 		text: 'Мы нацелены на получении позиции лидера отрасли, создавая не просто здания, но и возможности для людей, поддерживая их ценности и укрепляя уверенность в будущем. Мы сотрудничаем с лучшими архитекторами и инженерами, чтобы гарантировать высокие стандарты строительства и долговечность наших объектов.',
 		fullText: false
+	},
+	{
+		title: 'Цели',
+		subtitle: 'Статус лидера, надежность, довольство клиентов.',
+		text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		fullText: false
 	}
 ]);
-const createText = ref(craeteInitialText.slice(0, 150));
+const createText = ref(isBig ? craeteInitialText : craeteInitialText.slice(0, 150));
 const mainRef = ref();
-const activeLink = ref('Мы');
+const activeLink = ref('О компании');
 
 const showOrCollapseCreateText = () =>
 	createText.value.length > 153
@@ -278,7 +200,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .navbar {
-	padding: 1rem 0 !important;
+	padding: 1rem 0;
 	width: 100%;
 	position: fixed;
 	bottom: 0;
@@ -286,6 +208,7 @@ onMounted(() => {
 	justify-content: space-around;
 	background-color: #000;
 	box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
+	z-index: 15;
 	@media only screen and (min-width: 768px) {
 		display: none;
 	}
@@ -322,276 +245,13 @@ onMounted(() => {
 		display: none;
 	}
 }
-.partners {
-	display: flex;
-	flex-direction: column;
-	gap: 3rem;
-	&.active {
-		.partners__title {
-			transform: translateY(0);
-			opacity: 1;
-		}
-		.partners__item {
-			transform: translateX(0);
-			opacity: 1;
-		}
-	}
-	&__title {
-		align-self: center;
-		font-size: 9rem;
-		font-weight: bold;
-		transform: translateY(3rem);
-		opacity: 0;
-		transition: opacity 0.5s, transform 0.5s;
-		@media only screen and (max-width: 768px) {
-			font-size: 6rem;
-		}
-	}
-	&__list {
-		list-style: none;
-		display: flex;
-		gap: 3rem;
-		justify-content: center;
-		padding: 0 5rem;
-	}
-	&__item {
-		transform: translateX(100%);
-		opacity: 0;
-		transition: opacity 0.5s, transform 0.5s;
-		height: 6rem;
-		&:nth-child(2) {
-			transition-delay: 150ms;
-		}
-		img {
-			width: 100%;
-			height: 100%;
-		}
-	}
-}
-.goals {
-	background-color: #000;
-	padding: 5rem 10rem !important;
-	display: flex;
-	gap: 4.4rem;
-	flex-direction: column;
-	&.active {
-		.goals__box {
-			transform: scale(1);
-			opacity: 1;
-		}
-		.goals__title {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-	&__box {
-		border-radius: 40px;
-		overflow: hidden;
-		color: #fff;
-		transform: scale(0);
-		opacity: 0;
-		transition: opacity 1s, transform 1s;
-		&:nth-child(2) {
-			transition-delay: 300ms;
-		}
-		&:nth-child(3) {
-			transition-delay: 600ms;
-		}
-		&-banner {
-			position: relative;
-			&::before {
-				content: '';
-				position: absolute;
-				inset: 0;
-				width: 100%;
-				height: 100%;
-				background-image: linear-gradient(to bottom, transparent, #000000);
-			}
-		}
-		&-content {
-			position: absolute;
-			bottom: 0;
-			padding: 2rem;
-		}
-		&-title {
-			font-size: 50px;
-			font-weight: bold;
-		}
-		&-subtitle {
-			font-size: 24px;
-			font-weight: bold;
-		}
-		&-text {
-			font-size: max(2rem, 17px);
-			padding: 2rem;
-		}
-		img {
-			border-radius: 40px;
-			width: 100%;
-			height: 44rem;
-			object-fit: cover;
-		}
-	}
-	&__container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-		justify-content: center;
-		gap: 2.4rem;
-	}
-	&__title {
-		align-self: center;
-		color: #fff;
-		font-size: 9rem;
-		font-weight: bold;
-		transform: translateY(3rem);
-		opacity: 0;
-		transition: opacity 0.5s, transform 0.5s;
-		@media only screen and (max-width: 768px) {
-			font-size: 6rem;
-		}
-	}
-}
-.mission {
-	position: relative;
-	cursor: none;
-	display: grid;
-	gap: 3.4rem;
-	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-	z-index: 1;
-	&.active {
-		.mission__box {
-			transform: translateX(0);
-			opacity: 1;
-		}
-	}
-	&__box {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		opacity: 0;
-		transition: opacity 1s, transform 1s;
-		&:first-child {
-			transform: translateX(-100%);
-		}
-		&:last-child {
-			transform: translateX(100%);
-		}
-	}
-	&__title {
-		font-size: 6.4rem;
-		font-weight: bold;
-		@media only screen and (max-width: 768px) {
-			font-size: max(4rem, 32px);
-		}
-	}
-	&__subtitle {
-		font-size: max(1.5rem, 14px);
-		font-style: italic;
-		font-family: var(--font-roboto);
-	}
-	&__text {
-		font-family: var(--font-roboto);
-		font-size: max(1.8rem, 14px);
-		font-weight: 500;
-	}
-}
-.boss {
-	background-color: black;
-	color: white;
-	padding-top: 3rem !important;
-	padding-bottom: 3rem !important;
-	font-family: var(--font-roboto);
-	display: flex;
-	flex-direction: column;
-	gap: 3rem;
-
-	&.active {
-		.boss__id,
-		.boss__speech {
-			transform: translateX(0);
-			opacity: 1;
-		}
-		.boss__image-container,
-		.boss__signature {
-			scale: 1;
-		}
-	}
-	&__content {
-		display: flex;
-		flex-wrap: wrap;
-		column-gap: 1rem;
-		row-gap: 4rem;
-		& > * {
-			flex: 1;
-			min-width: 300px;
-		}
-	}
-	&__text {
-		font-size: 16px;
-	}
-	&__id {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-end;
-		gap: 5px;
-		font-style: italic;
-	}
-	&__name {
-		font-size: 22px;
-		font-weight: 700;
-	}
-	&__job {
-		font-size: 18px;
-		font-weight: 400;
-	}
-	&__speech {
-		grid-area: speech;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		transform: translateX(-100%);
-		opacity: 0;
-		transition: opacity 1s, transform 1s;
-	}
-	&__image {
-		grid-area: pic;
-		position: relative;
-		display: flex;
-		padding-right: 15rem;
-		@media only screen and (max-width: 1200px) {
-			padding-right: 0;
-		}
-		&-container {
-			background-color: #fff;
-			border-radius: 50%;
-			transform: translateY(-30px) scale(1.3);
-			scale: 0;
-			transition: scale 0.5s;
-			@media only screen and (max-width: 1200px) {
-				transform: none;
-			}
-		}
-		img {
-			transform: scale(0.95);
-			border-radius: 50%;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-		}
-	}
-	&__id {
-		grid-area: id;
-		transform: translateX(200%);
-		opacity: 0;
-		transition: opacity 1s, transform 1s;
-	}
-}
 .create {
 	display: flex;
 	align-items: flex-start;
 	gap: 2rem;
 	margin-bottom: 5rem;
-	cursor: none;
+	// cursor: none;
+	font-family: var(--font-bebas);
 
 	@media only screen and (max-width: 1000px) {
 		flex-direction: column;
@@ -621,6 +281,7 @@ onMounted(() => {
 		display: flex;
 		flex-direction: column;
 		gap: 2rem;
+		font-family: var(--font-roboto);
 		& > * {
 			transform: translateX(100%);
 			opacity: 0;
@@ -628,14 +289,14 @@ onMounted(() => {
 		}
 		&-text {
 			font-family: var(--font-roboto);
-			font-weight: 500;
 			font-size: max(1.8rem, 14px);
 			line-height: 1.5;
 			transition-delay: 200ms;
 		}
 		&-title {
-			font-size: 3.8rem;
+			font-size: 3.2rem;
 			font-weight: bold;
+			line-height: normal;
 		}
 	}
 	&__big {
@@ -663,12 +324,11 @@ onMounted(() => {
 	display: flex;
 	justify-content: space-between;
 	margin: 5rem 0;
-	z-index: 10;
 	list-style: none;
 	transition: background-color 1s;
-	padding-top: 8px !important;
-	padding-bottom: 8px !important;
-	cursor: none;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	z-index: 10;
 	&.pinned {
 		background-color: rgba(255, 255, 255, 0.8);
 	}
@@ -676,17 +336,17 @@ onMounted(() => {
 		display: none;
 	}
 	&__item {
-		padding: 1.5rem 2rem;
-		border-radius: 15px;
+		padding: 1rem 2rem;
+		border-radius: 99px;
 		cursor: pointer;
-		font-family: var(--font-gilroy);
-		font-weight: 700;
-		font-size: 20px;
+		font-weight: 400;
+		font-size: 2rem;
 		opacity: 0.7;
-
-		transition: opacity 300ms, background-color 300ms, color 300ms;
+		transition: opacity 300ms, background-image 300ms, color 300ms;
+		display: flex;
+		align-items: center;
 		&--active {
-			background-color: #000;
+			background-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
 			color: #fff;
 			opacity: 1;
 		}
@@ -695,7 +355,7 @@ onMounted(() => {
 .logo {
 	align-self: center;
 	width: 80%;
-	max-width: 41.2rem;
+	max-width: 42vmax;
 	transform: scale(0);
 	transition: transform 1s;
 	&.active {
@@ -711,20 +371,54 @@ onMounted(() => {
 	gap: 5rem;
 	line-height: 1.5;
 	overflow: hidden;
-	& > *:not(.partners):not(svg) {
-		padding: 0 10rem;
-		@media only screen and (max-width: 1280px) {
-			padding: 0 7rem;
-		}
-		@media only screen and (max-width: 768px) {
-			padding: 0 4rem;
-		}
-		@media only screen and (max-width: 400px) {
-			padding: 0 2rem;
+	cursor: none;
+	font-family: var(--font-roboto);
+}
+.mission {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+	column-gap: 4rem;
+	row-gap: 5rem;
+	z-index: 1;
+	&.active &__box {
+		opacity: 1;
+		transform: rotateY(0) translate(0, 0);
+	}
+	&__box {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+		padding-left: 2rem;
+		border-left: 4px solid transparent;
+		border-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		border-image-slice: 1;
+		opacity: 0;
+		transform: rotateY(-100deg) translate(9rem, 9rem);
+		transition: transform 700ms, opacity 700ms;
+		@for $i from 2 through 3 {
+			&:nth-child(#{$i}) {
+				transition-delay: $i * 100ms;
+			}
 		}
 	}
-	& > *:not(.list):not(.logo):not(.pattern__container):not(.mission) {
-		z-index: 4;
+	&__title {
+		font-size: 6.4rem;
+		font-weight: bold;
+		line-height: normal;
+		@media only screen and (max-width: 768px) {
+			font-size: max(4rem, 32px);
+		}
+	}
+	&__subtitle {
+		font-size: max(1.8rem, 16px);
+		font-family: var(--font-roboto);
+		font-weight: bold;
+	}
+	&__text {
+		font-family: var(--font-roboto);
+		font-size: max(1.6rem, 14px);
+		font-weight: 500;
 	}
 }
 </style>

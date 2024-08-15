@@ -17,8 +17,6 @@ import Pattern from '@/components/Pattern.vue';
 		width: 100%;
 		padding: 0 !important;
 		z-index: 0;
-		display: flex;
-		flex-direction: column;
 		top: 10rem;
 		filter: opacity(0.1);
 

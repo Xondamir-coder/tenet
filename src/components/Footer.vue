@@ -1,14 +1,10 @@
 <template>
-	<footer class="footer">
-		<div class="footer__video-container">
-			<video class="footer__video" autoplay muted loop>
-				<source src="@/assets/video.mp4" type="video/mp4" />
-				Your browser does not support the video tag.
-			</video>
-		</div>
-		<Logo class="footer__logo" fill="#fff" />
+	<footer class="footer section-padding">
+		<Logo class="footer__logo" fill="#000" />
 		<div class="footer__contacts">
-			<PhoneIcon class="footer__phone" />
+			<div class="footer__phone">
+				<PhoneIcon />
+			</div>
 			<a class="footer__tel" href="tel:+99 000 90 00">99 000 9 000</a>
 			<ul class="footer__links">
 				<li class="footer__link" v-for="link in links" :key="link">
@@ -16,7 +12,13 @@
 				</li>
 			</ul>
 		</div>
-		<p class="footer__tenet">&copy; {{ new Date().getFullYear() }} TENET GROUP</p>
+		<p class="footer__tenet">Tenet Group {{ new Date().getFullYear() }}</p>
+		<p class="footer__text">
+			Информация, представленная на данном сайте, носит исключительно ознакомительный характер
+			и не является публичной офертой. Все материалы и данные могут быть изменены без
+			предварительного уведомления. Мы рекомендуем уточнять детали и условия непосредственно у
+			менеджеров нашей компании.
+		</p>
 		<p class="footer__text">
 			ALL RIGHTS RESERVED. Developed by
 			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>
@@ -31,21 +33,26 @@ import YoutubeIcon from '@/components/icons/Youtube.vue';
 import TelegramIcon from '@/components/icons/Telegram.vue';
 import FacebookIcon from '@/components/icons/Facebook.vue';
 import InstagramIcon from '@/components/icons/Instagram.vue';
+import LinkedinIcon from '@/components/icons/Linkedin.vue';
 
-const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
+const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinIcon];
 </script>
 
 <style lang="scss" scoped>
 .footer {
-	margin-top: -5rem;
 	display: flex;
 	gap: 2rem;
 	flex-direction: column;
 	align-items: center;
-	color: #fff;
+	color: #000;
 	position: relative;
-	padding-top: 4rem !important;
-	padding-bottom: 4rem !important;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+	font-family: var(--font-bebas);
+	z-index: 2;
+	@media only screen and (max-width: 768px) {
+		padding-bottom: 10rem;
+	}
 	&.active {
 		.footer__text,
 		.footer__tenet,
@@ -66,17 +73,28 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 		transform: translateY(-6rem);
 		transition-delay: 600ms;
 		text-transform: uppercase;
+		&:not(:has(a)) {
+			font-size: 12px;
+			line-height: 18px;
+			text-align: center;
+			text-transform: initial;
+
+			font-family: var(--font-roboto);
+			margin-top: -1.5rem;
+		}
 		a {
 			color: inherit;
 		}
 	}
 	&__tenet {
 		font-family: var(--font-roboto);
-		font-size: 1.4rem;
 		opacity: 0;
 		transform: translateY(-6rem);
 		transition-delay: 400ms;
-		text-transform: uppercase;
+		font-size: 16px;
+		font-weight: 700;
+		line-height: 23.2px;
+		text-align: center;
 	}
 	&__link svg {
 		width: 2.5rem;
@@ -86,20 +104,29 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 		list-style: none;
 		display: flex;
 		width: 100%;
-		justify-content: space-around;
+		gap: 16px;
 	}
 	&__contacts {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 1rem;
 		opacity: 0;
+		gap: 5px;
 		transform: translateY(-6rem);
 		transition-delay: 200ms;
 	}
 	&__phone {
-		width: 4.1rem;
-		height: 4.1rem;
+		width: 3.8rem;
+		height: 3.8rem;
+		background-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		color: #fff;
+		border-radius: 50%;
+		display: grid;
+		place-items: center;
+		svg {
+			width: 60%;
+			height: 60%;
+		}
 	}
 	&__tel {
 		text-decoration: none;
@@ -113,23 +140,6 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon];
 		margin-bottom: 3rem;
 		opacity: 0;
 		transform: translateY(-6rem);
-	}
-	&__video {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		transform: translate(-50%, -50%);
-		&-container {
-			z-index: -1;
-			position: absolute;
-			inset: 0;
-			width: 100%;
-			height: 100%;
-			overflow: hidden;
-		}
 	}
 }
 </style>

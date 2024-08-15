@@ -52,7 +52,7 @@ onUnmounted(() => {
 <style scoped lang="scss">
 .circle {
 	position: fixed;
-	z-index: 3;
+	z-index: 1;
 	width: 100px;
 	height: 100px;
 	border-radius: 50%;
