@@ -181,7 +181,6 @@ const links = computed(() =>
 const toggleMenu = () => {
 	isMenuOpen.value = !isMenuOpen.value;
 	document.body.classList.toggle('overflow-hidden', isMenuOpen.value);
-	lenis.toggle(!isMenuOpen.value);
 };
 const navigateTo = (linkIndex, isMobile) => {
 	isMobile && toggleMenu();

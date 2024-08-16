@@ -69,7 +69,7 @@ onMounted(() => {
 	gap: 1rem;
 	text-align: center;
 	width: 100%;
-	max-width: 150px;
+	max-width: 200px;
 }
 .text {
 	padding: 1rem;
@@ -77,6 +77,7 @@ onMounted(() => {
 	cursor: pointer;
 	animation: fade-in forwards 700ms;
 	opacity: 0;
+	font-size: 20px;
 	&:nth-child(2) {
 		animation-delay: 400ms;
 	}
