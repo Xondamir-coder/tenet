@@ -134,7 +134,7 @@ onMounted(async () => {
 		top: 50%;
 		right: 0;
 		transform: translate(25%, -13%) rotate(0deg); /* Keep the vertical center aligned */
-		animation: rotation 150s linear infinite; /* Smooth, continuous rotation */
+		animation: rotation 300s linear infinite; /* Smooth, continuous rotation */
 		transform-origin: center center;
 		scale: 1.1;
 
@@ -151,7 +151,7 @@ onMounted(async () => {
 		transform: translate(25%, -13%) rotate(0deg);
 	}
 	to {
-		transform: translate(26%, -18%) rotate(360deg);
+		transform: translate(25%, -13%) rotate(360deg);
 	}
 }
 </style>

@@ -61,8 +61,8 @@ onUnmounted(() => {
 	left: 0; /* Centering the circle */
 	transform: translate(-50%, -50%);
 	pointer-events: none;
-	-webkit-backdrop-filter: contrast(100); /* For Safari */
-	backdrop-filter: contrast(100); /* For other modern browsers */
+	-webkit-backdrop-filter: opacity(1); /* For Safari */
+	backdrop-filter: opacity(1); /* For other modern browsers */
 	-webkit-mix-blend-mode: screen; /* For Safari */
 	mix-blend-mode: screen; /* For other modern browsers */
 

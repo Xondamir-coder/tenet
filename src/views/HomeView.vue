@@ -12,6 +12,30 @@
 				:key="i">
 				{{ link }}
 			</li>
+			<li class="list__item">
+				<button class="list__lang">
+					<span>{{
+						$i18n.locale == 'ru' ? 'Рус' : $i18n.locale == 'uz' ? "O'zb" : 'Eng'
+					}}</span>
+					<svg
+						width="10"
+						height="6"
+						viewBox="0 0 10 6"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg">
+						<path
+							fill-rule="evenodd"
+							clip-rule="evenodd"
+							d="M0.528636 0.846538C0.788986 0.586188 1.2111 0.586188 1.47145 0.846538L5.00004 4.37513L8.52864 0.846538C8.78899 0.586188 9.2111 0.586188 9.47145 0.846538C9.7318 1.10689 9.7318 1.529 9.47145 1.78935L5.47145 5.78935C5.2111 6.0497 4.78899 6.0497 4.52864 5.78935L0.528636 1.78935C0.268287 1.529 0.268287 1.10689 0.528636 0.846538Z"
+							fill="white" />
+					</svg>
+				</button>
+				<div class="list__langs">
+					<p v-for="lang in ['uz', 'ru', 'en']" @click="changeLang(lang)">
+						{{ lang == 'ru' ? 'Рус' : lang == 'uz' ? "O'zb" : 'Eng' }}
+					</p>
+				</div>
+			</li>
 		</ul>
 		<section id="we" class="create section-padding">
 			<div class="create__left">
@@ -163,7 +187,7 @@ const lenisScrollTo = name =>
 		duration: 1.2,
 		ease: 'power3.inOut'
 	});
-const changeLang = () => {};
+const changeLang = lang => (i18n.global.locale = lang);
 
 onMounted(() => {
 	const observer = new IntersectionObserver(
@@ -331,6 +355,40 @@ onMounted(() => {
 	@media only screen and (max-width: 768px) {
 		display: none;
 	}
+	&__langs {
+		position: absolute;
+		top: 100%;
+		left: 50%;
+		translate: -50%;
+		background-color: #000;
+		padding: 1rem 2rem;
+		display: flex;
+		gap: 10px;
+		border-radius: 10px;
+		flex-direction: column;
+		text-align: left;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-2rem);
+		transition: opacity 300ms, transform 300ms, visibility 300ms;
+	}
+	&__lang {
+		font: inherit;
+		background-color: #000;
+		border: none;
+		color: #fff;
+		padding: 1rem 2rem;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		border-radius: 99px;
+		cursor: pointer;
+		&:focus ~ .list__langs {
+			opacity: 1;
+			transform: translateY(0);
+			visibility: visible;
+		}
+	}
 	&__item {
 		padding: 1rem 2rem;
 		border-radius: 99px;
@@ -341,6 +399,15 @@ onMounted(() => {
 		transition: opacity 300ms, background-image 300ms, color 300ms;
 		display: flex;
 		align-items: center;
+		&:has(.list__lang) {
+			font-family: var(--font-roboto);
+			opacity: 1;
+			font-size: 16px;
+			font-weight: 500;
+			letter-spacing: 0.2px;
+			position: relative;
+			color: #fff;
+		}
 		&--active {
 			background-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
 			color: #fff;
