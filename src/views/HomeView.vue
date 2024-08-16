@@ -5,27 +5,38 @@
 		<Logo class="logo section-padding" />
 		<ul class="list section-padding">
 			<li
-				@click="navigateTo(link)"
+				@click="navigateTo(i)"
 				class="list__item"
-				v-for="link in links"
-				:class="{ 'list__item--active': link == activeLink }"
-				:key="link">
+				v-for="(link, i) in links"
+				:class="{ 'list__item--active': i == activeLinkIndex }"
+				:key="i">
 				{{ link }}
 			</li>
 		</ul>
 		<section id="we" class="create section-padding">
 			<div class="create__left">
-				<p class="create__big">Создаём</p>
-				<p class="create__massive">Каноны</p>
+				<p class="create__big">{{ $t('create-big') }}</p>
+				<p class="create__massive">{{ $t('create-massive') }}</p>
 			</div>
 			<div class="create__right">
 				<h1 class="create__right-title">
-					Согласны ли вы с тем, что будущее – это не то, что нас ждет, а то, что мы
-					создаем?
+					{{ $t('create-title') }}
 				</h1>
-				<p class="create__right-text" v-html="createText"></p>
-				<button class="more-button" @click="showOrCollapseCreateText" type="button">
-					{{ createText.length > 153 ? 'Скрыть...' : 'Показать еще...' }}
+				<p class="create__right-text">
+					{{
+						isCreateTextShort
+							? `${$t('create-text-1').slice(0, 100)} ...`
+							: $t('create-text-1')
+					}}
+					<br />
+					<br />
+					{{ !isCreateTextShort ? $t('create-text-2') : '' }}
+				</p>
+				<button
+					class="more-button"
+					@click="isCreateTextShort = !isCreateTextShort"
+					type="button">
+					{{ !isCreateTextShort ? 'Скрыть...' : 'Показать еще...' }}
 				</button>
 			</div>
 		</section>
@@ -54,13 +65,13 @@
 		<Footer />
 		<nav class="navbar section-padding">
 			<button
-				@click="navigateTo(name)"
 				class="navbar__button"
-				v-for="{ link, name, icon } in bottomNavLinks"
-				:key="name"
-				:class="{ 'navbar__button--active': name == activeLink }">
-				<component :is="icon"></component>
-				<span>{{ name }}</span>
+				v-for="(link, i) in bottomNavLinks"
+				:key="link.name"
+				@click="navigateTo(i)"
+				:class="{ 'navbar__button--active': i == activeLinkIndex }">
+				<component :is="link.icon"></component>
+				<span>{{ link.name }}</span>
 			</button>
 		</nav>
 	</main>
@@ -70,7 +81,7 @@
 import Logo from '@/components/icons/Logo.vue';
 import Footer from '@/components/Footer.vue';
 import lenis from '@/js/lenis';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Crown from '@/components/icons/Crown.vue';
@@ -81,93 +92,78 @@ import Timer from '@/components/icons/Timer.vue';
 import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
+import i18n from '@/locales';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const isBig = window.innerWidth >= 500;
-const links = ['О компании', 'Миссия', 'Видение', 'Цели', 'Скоро'];
-const bottomNavLinks = [
+const links = computed(() => [
+	i18n.global.t('link-about'),
+	i18n.global.t('link-mission'),
+	i18n.global.t('link-vision'),
+	i18n.global.t('link-goals'),
+	i18n.global.t('link-projects')
+]);
+const bottomNavLinks = computed(() => [
 	{
-		name: 'О компании',
-		link: 'we',
+		name: i18n.global.t('link-about'),
 		icon: Crown
 	},
 	{
-		name: 'Миссия',
-		link: 'mission',
+		name: i18n.global.t('link-mission'),
 		icon: Briefcase
 	},
 	{
-		name: 'Видение',
-		link: 'mission',
+		name: i18n.global.t('link-vision'),
 		icon: Eye
 	},
 	{
-		name: 'Цели',
-		link: 'mission',
+		name: i18n.global.t('link-goals'),
 		icon: Radar
 	},
 	{
-		name: 'Скоро',
-		link: 'soon',
+		name: i18n.global.t('link-projects'),
 		icon: Timer
 	}
-];
-const linkMap = {
-	Миссия: 'mission',
-	Видение: 'mission',
-	Цели: 'mission',
-	Скоро: 'soon',
-	'О компании': 'we'
-};
-const craeteInitialText = `Компания Tenet Group выходит за рамки привычного представления о девелопменте и
-					строительстве. Мы тщательно прорабатываем каждую деталь наших проектов, четко
-					осознавая как целостную природу строительства, так и значение каждой отдельной
-					части в создании единого сооружения.
-					<br />
-					<br />
-					Наши дома — это не просто стены и крыша, это фундамент для самых важных моментов
-					вашей жизни. Мы воплощаем пространства, где вы сможете созидать моменты счастья
-					и создавать историю, которая останется с вами навсегда.`;
+]);
 
 const missions = ref([
 	{
-		title: 'Миссия',
-		subtitle:
-			'Мы верим, что каждое сооружение должно не только эффективно выполнять свои задачи, но и вдохновлять.',
-		text: 'Миссией Tenet Group является создание новых стандартов жилого и коммерческого пространства, которые станут вектором для всей отрасли. Мы стремимся воплотить комфортные и современные пространства для жизни и работы людей, которые будут отражать их мечты и желания, а также соответствовать их ожиданиям о современной и продуманной недвижимости.',
+		title: computed(() => i18n.global.t('mission-title-1')),
+		subtitle: computed(() => i18n.global.t('mission-subtitle-1')),
+		text: computed(() => i18n.global.t('mission-text-1')),
 		fullText: false
 	},
+
 	{
-		title: 'Видение',
-		subtitle: 'Строительство для нас больше, чем создание физической инфраструктуры',
-		text: 'Мы нацелены на получении позиции лидера отрасли, создавая не просто здания, но и возможности для людей, поддерживая их ценности и укрепляя уверенность в будущем. Мы сотрудничаем с лучшими архитекторами и инженерами, чтобы гарантировать высокие стандарты строительства и долговечность наших объектов.',
+		title: computed(() => i18n.global.t('mission-title-2')),
+		subtitle: computed(() => i18n.global.t('mission-subtitle-2')),
+		text: computed(() => i18n.global.t('mission-text-2')),
 		fullText: false
 	},
+
 	{
-		title: 'Цели',
-		subtitle: 'Статус лидера, надежность, довольство клиентов.',
-		text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+		title: computed(() => i18n.global.t('mission-title-3')),
+		subtitle: computed(() => i18n.global.t('mission-subtitle-3')),
+		text: computed(() => i18n.global.t('mission-text-3')),
 		fullText: false
 	}
 ]);
-const createText = ref(isBig ? craeteInitialText : craeteInitialText.slice(0, 150));
 const mainRef = ref();
-const activeLink = ref('О компании');
+const isCreateTextShort = ref(isBig ? false : true);
+const activeLinkIndex = ref(0);
 
-const showOrCollapseCreateText = () =>
-	createText.value.length > 153
-		? (createText.value = createText.value.slice(0, 150) + '...')
-		: (createText.value = craeteInitialText);
-const navigateTo = linkName => {
-	activeLink.value = linkName;
-	lenisScrollTo(document.getElementById(linkMap[linkName]));
+const navigateTo = linkIndex => {
+	activeLinkIndex.value = linkIndex;
+	const el = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
+	lenisScrollTo(document.getElementById(el));
 };
 const lenisScrollTo = name =>
 	lenis.scrollTo(name, {
 		duration: 1.2,
 		ease: 'power3.inOut'
 	});
+const changeLang = () => {};
 
 onMounted(() => {
 	const observer = new IntersectionObserver(

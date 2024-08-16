@@ -1,7 +1,7 @@
 <template>
 	<section class="section-padding soon" id="soon">
-		<h1 class="soon__title">Жизнь среди звёзд</h1>
-		<p class="soon__text">Скоро</p>
+		<h1 class="soon__title">{{ $t('soon-title') }}</h1>
+		<p class="soon__text">{{ $t('soon-text') }}</p>
 		<!-- <canvas ref="canvasRef"></canvas> -->
 		<div class="soon__planet">
 			<img src="@/assets/planet-texture.png" alt="planet" />
@@ -134,7 +134,7 @@ onMounted(async () => {
 		top: 50%;
 		right: 0;
 		transform: translate(25%, -13%) rotate(0deg); /* Keep the vertical center aligned */
-		animation: rotation 90s linear infinite; /* Smooth, continuous rotation */
+		animation: rotation 150s linear infinite; /* Smooth, continuous rotation */
 		transform-origin: center center;
 		scale: 1.1;
 

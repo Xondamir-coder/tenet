@@ -12,15 +12,12 @@
 				</li>
 			</ul>
 		</div>
-		<p class="footer__tenet">Tenet Group {{ new Date().getFullYear() }}</p>
+		<p class="footer__tenet">&copy; Tenet Group, {{ new Date().getFullYear() }}</p>
 		<p class="footer__text">
-			Информация, представленная на данном сайте, носит исключительно ознакомительный характер
-			и не является публичной офертой. Все материалы и данные могут быть изменены без
-			предварительного уведомления. Мы рекомендуем уточнять детали и условия непосредственно у
-			менеджеров нашей компании.
+			{{ $t('footer-text') }}
 		</p>
 		<p class="footer__text">
-			ALL RIGHTS RESERVED. Developed by
+			{{ $t('footer-dev') }}
 			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>
 		</p>
 	</footer>
@@ -87,11 +84,11 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 		}
 	}
 	&__tenet {
-		font-family: var(--font-roboto);
+		font-family: var(--font-bebas);
 		opacity: 0;
 		transform: translateY(-6rem);
 		transition-delay: 400ms;
-		font-size: 16px;
+		font-size: 1.8rem;
 		font-weight: 700;
 		line-height: 23.2px;
 		text-align: center;
