@@ -436,6 +436,9 @@ onMounted(() => {
 	overflow: hidden;
 	cursor: none;
 	font-family: var(--font-roboto);
+	& > * {
+		cursor: none;
+	}
 }
 .mission {
 	position: relative;
