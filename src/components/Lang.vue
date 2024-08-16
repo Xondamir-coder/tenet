@@ -33,16 +33,16 @@ const changeLang = lang => {
 
 const langs = [
 	{
+		lang: 'en',
+		label: 'English'
+	},
+	{
 		lang: 'uz',
 		label: "O'zbek"
 	},
 	{
 		lang: 'ru',
 		label: 'Русский'
-	},
-	{
-		lang: 'en',
-		label: 'English'
 	}
 ];
 

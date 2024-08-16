@@ -46,7 +46,6 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 	font-family: var(--font-bebas);
-	z-index: 2;
 	@media only screen and (max-width: 768px) {
 		padding-bottom: 10rem;
 	}

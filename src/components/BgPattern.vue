@@ -10,7 +10,6 @@ import Pattern from '@/components/Pattern.vue';
 
 <style lang="scss" scoped>
 .pattern__container {
-	cursor: none;
 	position: absolute;
 	inset: 0;
 	width: 100%;

@@ -2,7 +2,25 @@
 	<CursorCircle />
 	<main class="main" ref="mainRef">
 		<BgPattern />
-		<Logo class="logo section-padding" />
+		<div class="menu section-padding" :class="{ open: isMenuOpen }">
+			<BlackPattern class="menu__bg" />
+			<div
+				class="menu__item"
+				v-for="(link, i) in bottomNavLinks"
+				:key="link.name"
+				@click="navigateTo(i)">
+				<component :is="link.icon" />
+				<span>{{ link.name }}</span>
+			</div>
+		</div>
+		<section class="nav section-padding" :class="{ open: isMenuOpen }">
+			<button class="nav__button" @click="openMenu">
+				<IconMenu class="nav__open" />
+				<IconClose class="nav__close" />
+			</button>
+			<Logo class="logo section-padding" />
+			<IconGlobal class="nav__global" />
+		</section>
 		<ul class="list section-padding">
 			<li
 				@click="navigateTo(i)"
@@ -87,25 +105,17 @@
 		</section>
 		<Soon />
 		<Footer />
-		<nav class="navbar section-padding">
-			<button
-				class="navbar__button"
-				v-for="(link, i) in bottomNavLinks"
-				:key="link.name"
-				@click="navigateTo(i)"
-				:class="{ 'navbar__button--active': i == activeLinkIndex }">
-				<component :is="link.icon"></component>
-				<span>{{ link.name }}</span>
-			</button>
-		</nav>
 	</main>
 </template>
 
 <script setup>
 import Logo from '@/components/icons/Logo.vue';
+import IconGlobal from '@/components/icons/Global.vue';
+import IconMenu from '@/components/icons/Menu.vue';
+import IconClose from '@/components/icons/Close.vue';
 import Footer from '@/components/Footer.vue';
 import lenis from '@/js/lenis';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Crown from '@/components/icons/Crown.vue';
@@ -117,10 +127,12 @@ import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
 import i18n from '@/locales';
+import BlackPattern from '@/components/BlackPattern.vue';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const isBig = window.innerWidth >= 500;
+const isMenuOpen = ref(false);
 const links = computed(() => [
 	i18n.global.t('link-about'),
 	i18n.global.t('link-mission'),
@@ -158,14 +170,12 @@ const missions = ref([
 		text: computed(() => i18n.global.t('mission-text-1')),
 		fullText: false
 	},
-
 	{
 		title: computed(() => i18n.global.t('mission-title-2')),
 		subtitle: computed(() => i18n.global.t('mission-subtitle-2')),
 		text: computed(() => i18n.global.t('mission-text-2')),
 		fullText: false
 	},
-
 	{
 		title: computed(() => i18n.global.t('mission-title-3')),
 		subtitle: computed(() => i18n.global.t('mission-subtitle-3')),
@@ -177,7 +187,17 @@ const mainRef = ref();
 const isCreateTextShort = ref(isBig ? false : true);
 const activeLinkIndex = ref(0);
 
+const openMenu = () => {
+	isMenuOpen.value = !isMenuOpen.value;
+	lenis.stop();
+	document.body.style.overflow = 'hidden';
+};
 const navigateTo = linkIndex => {
+	if (!isBig) {
+		document.body.style.overflow = 'visible';
+		lenis.start();
+	}
+	isMenuOpen.value = false;
 	activeLinkIndex.value = linkIndex;
 	const el = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
 	lenisScrollTo(document.getElementById(el));
@@ -219,36 +239,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.navbar {
-	padding: 1rem 0;
-	width: 100%;
-	position: fixed;
-	bottom: 0;
-	display: flex;
-	justify-content: space-around;
-	background-color: #000;
-	box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.08);
-	z-index: 15;
-	@media only screen and (min-width: 768px) {
-		display: none;
-	}
-
-	&__button {
-		background-color: transparent;
-		border: none;
-		display: flex;
-		flex-direction: column;
-		color: #fff;
-		align-items: center;
-		gap: 3px;
-		font: inherit;
-		opacity: 0.4;
-		transition: opacity 500ms;
-		&--active {
-			opacity: 1;
-		}
-	}
-}
 .more-button {
 	cursor: pointer;
 	font-family: var(--font-roboto);
@@ -270,8 +260,8 @@ onMounted(() => {
 	align-items: flex-start;
 	gap: 2rem;
 	margin-bottom: 5rem;
-	// cursor: none;
 	font-family: var(--font-bebas);
+	transition: opacity 1s, visibility 1s;
 
 	@media only screen and (max-width: 1000px) {
 		flex-direction: column;
@@ -345,10 +335,11 @@ onMounted(() => {
 	justify-content: space-between;
 	margin: 5rem 0;
 	list-style: none;
-	transition: background-color 1s;
 	padding-top: 8px;
 	padding-bottom: 8px;
 	z-index: 10;
+	transition: opacity 1s, visibility 1s, background-color 1s;
+
 	&.pinned {
 		background-color: rgba(255, 255, 255, 0.8);
 	}
@@ -360,8 +351,9 @@ onMounted(() => {
 		top: 100%;
 		left: 50%;
 		translate: -50%;
-		background-color: #000;
+		background-color: rgba(0, 0, 0, 0.8);
 		padding: 1rem 2rem;
+		width: 80%;
 		display: flex;
 		gap: 10px;
 		border-radius: 10px;
@@ -383,6 +375,7 @@ onMounted(() => {
 		gap: 10px;
 		border-radius: 99px;
 		cursor: pointer;
+
 		&:focus ~ .list__langs {
 			opacity: 1;
 			transform: translateY(0);
@@ -391,6 +384,7 @@ onMounted(() => {
 		&:focus svg {
 			transform: rotate(180deg);
 		}
+
 		svg {
 			transition: transform 300ms;
 		}
@@ -426,31 +420,118 @@ onMounted(() => {
 	width: 80%;
 	max-width: 42vmax;
 	transform: scale(0);
-	transition: transform 1s;
-	&.active {
+	transition: transform 1s, color 300ms, opacity 1s;
+	color: #000;
+}
+body.lang .nav__button {
+	opacity: 0;
+}
+body.lang .nav__global {
+	opacity: 0;
+}
+.nav {
+	transform: scale(1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #7f7f7f;
+	gap: 4rem;
+	transition: color 300ms, opacity 1s;
+	z-index: 10;
+
+	@media only screen and (max-width: 500px) {
+		justify-content: space-between;
+	}
+	&.active .logo {
 		transform: scale(1);
+	}
+	&__global {
+		transition: color 300ms;
+		@media only screen and (min-width: 500px) {
+			display: none;
+		}
+	}
+	&__button {
+		background-color: transparent;
+		border: none;
+		position: relative;
+		display: grid;
+		place-items: center;
+		@media only screen and (min-width: 500px) {
+			display: none;
+		}
+		& > * {
+			transition: opacity 300ms, color 300ms;
+		}
+	}
+	&__close {
+		position: absolute;
+		top: 50%;
+		translate: 0 -50%;
+		opacity: 0;
+	}
+	&.open {
+		color: #fff;
+		.logo {
+			color: #fff;
+		}
+	}
+	&.open .nav__open {
+		opacity: 0;
+	}
+	&.open .nav__close {
+		opacity: 1;
+		color: #fff;
 	}
 }
 
-body.lang .main > *:not(.logo):not(.pattern__container) {
+body.lang .main > *:not(.nav):not(.pattern__container) {
 	opacity: 0;
 	visibility: hidden;
 }
+
+.menu {
+	position: fixed;
+	inset: 0;
+	background-color: #000;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	row-gap: 2rem;
+	align-content: center;
+	z-index: 1;
+	transform: translateX(-100%);
+	transition-property: transform;
+	transition-duration: 300ms;
+	&.open {
+		transform: translateX(0);
+	}
+	&__bg {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+	&__item {
+		font-size: 32px;
+		font-weight: 700;
+		color: #fff;
+		font-family: var(--font-bebas);
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		z-index: 2;
+	}
+}
 .main {
 	position: relative;
-	padding-top: 6rem;
+	padding-top: 3vw;
 	display: flex;
 	flex-direction: column;
 	gap: 5rem;
 	line-height: 1.5;
 	overflow: hidden;
-	cursor: none;
 	font-family: var(--font-roboto);
-	& > * {
-		cursor: none;
-		transition-property: opacity, visibility;
-		transition-duration: 1s;
-	}
 }
 .mission {
 	position: relative;

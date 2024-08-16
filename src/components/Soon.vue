@@ -4,7 +4,7 @@
 		<p class="soon__text">{{ $t('soon-text') }}</p>
 		<!-- <canvas ref="canvasRef"></canvas> -->
 		<div class="soon__planet">
-			<img src="@/assets/planet-texture.png" alt="planet" />
+			<img src="@/assets/planet.png" alt="planet" />
 		</div>
 	</section>
 </template>
@@ -104,22 +104,26 @@ onMounted(async () => {
 	flex-direction: column;
 	align-items: start;
 	justify-content: center;
-	gap: 32px;
-	z-index: 2;
+	gap: 3.2rem;
 	padding-top: 3rem;
 	padding-bottom: 3rem;
 	position: relative;
 	overflow: hidden;
-
+	@media only screen and (max-width: 768px) {
+		gap: 1.5rem;
+		justify-content: start;
+	}
 	&__title {
 		font-size: 12rem;
 		font-weight: 400;
 		line-height: 7.8rem;
 		font-family: var(--font-bebas);
 		line-height: 0.9;
-		z-index: 3;
+		z-index: 1;
+		@media only screen and (max-width: 768px) {
+			font-size: 6rem;
+		}
 	}
-
 	&__text {
 		padding: 1rem 2rem;
 		border-radius: 99px;
@@ -127,16 +131,25 @@ onMounted(async () => {
 		font-weight: 700;
 		line-height: 2.6rem;
 		background: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		cursor: pointer;
+		z-index: 1;
+		@media only screen and (max-width: 768px) {
+			font-size: 2rem;
+		}
 	}
 
 	&__planet {
 		position: absolute;
 		top: 50%;
 		right: 0;
-		transform: translate(25%, -13%) rotate(0deg); /* Keep the vertical center aligned */
+		translate: 30% -15%;
 		animation: rotation 300s linear infinite; /* Smooth, continuous rotation */
 		transform-origin: center center;
 		scale: 1.1;
+		@media only screen and (max-width: 768px) {
+			translate: 0 0;
+			scale: 1.5;
+		}
 
 		img {
 			width: 100%;
@@ -148,10 +161,10 @@ onMounted(async () => {
 
 @keyframes rotation {
 	from {
-		transform: translate(25%, -13%) rotate(0deg);
+		transform: rotate(0deg);
 	}
 	to {
-		transform: translate(25%, -13%) rotate(360deg);
+		transform: rotate(360deg);
 	}
 }
 </style>
