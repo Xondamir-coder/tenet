@@ -137,15 +137,15 @@ gsap.registerPlugin(ScrollTrigger);
 const langs = [
 	{
 		lang: 'en',
-		label: 'English'
+		label: 'Eng'
 	},
 	{
 		lang: 'uz',
-		label: "O'zbek"
+		label: "O'zb"
 	},
 	{
 		lang: 'ru',
-		label: 'Русский'
+		label: 'Рус'
 	}
 ];
 const isBig = window.innerWidth >= 500;
