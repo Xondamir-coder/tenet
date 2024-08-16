@@ -354,12 +354,12 @@ onMounted(() => {
 		border-radius: 99px;
 		cursor: pointer;
 
-		&:focus ~ .list__langs {
+		&:focus-within ~ .list__langs {
 			opacity: 1;
 			transform: translateY(0);
 			visibility: visible;
 		}
-		&:focus svg {
+		&:focus-within svg {
 			transform: rotate(180deg);
 		}
 
@@ -437,7 +437,7 @@ body.lang .nav__global {
 		&-button {
 			background-color: transparent;
 			border: none;
-			&:focus ~ .nav__langs {
+			&:focus-within ~ .nav__langs {
 				opacity: 1;
 				transform: translateY(0);
 				visibility: visible;
