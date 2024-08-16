@@ -1,6 +1,9 @@
 .section-padding {
 	padding: 0 10rem;
 }
+.overflow-hidden {
+	overflow: hidden;
+}
 @media only screen and (max-width: 1280px) {
 	.section-padding {
 		padding: 0 7rem;

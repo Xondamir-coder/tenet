@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<section class="nav section-padding" :class="{ open: isMenuOpen }">
-			<button class="nav__button" @click="openMenu">
+			<button class="nav__button" @click="toggleMenu">
 				<IconMenu class="nav__open" />
 				<IconClose class="nav__close" />
 			</button>
@@ -187,17 +187,18 @@ const mainRef = ref();
 const isCreateTextShort = ref(isBig ? false : true);
 const activeLinkIndex = ref(0);
 
-const openMenu = () => {
+const toggleMenu = () => {
 	isMenuOpen.value = !isMenuOpen.value;
-	lenis.stop();
-	document.body.style.overflow = 'hidden';
+	if (!isMenuOpen.value) {
+		lenis.start();
+		document.body.classList.remove('overflow-hidden');
+	} else {
+		lenis.stop();
+		document.body.classList.add('overflow-hidden');
+	}
 };
 const navigateTo = linkIndex => {
-	if (!isBig) {
-		document.body.style.overflow = 'visible';
-		lenis.start();
-	}
-	isMenuOpen.value = false;
+	toggleMenu();
 	activeLinkIndex.value = linkIndex;
 	const el = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
 	lenisScrollTo(document.getElementById(el));
