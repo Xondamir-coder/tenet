@@ -86,7 +86,7 @@
 					class="more-button"
 					@click="isCreateTextShort = !isCreateTextShort"
 					type="button">
-					{{ !isCreateTextShort ? 'Скрыть...' : 'Показать еще...' }}
+					{{ !isCreateTextShort ? `${$t('collapse')}...` : `${$t('show')}...` }}
 				</button>
 			</div>
 		</section>
@@ -107,7 +107,7 @@
 					@click="mission.fullText = !mission.fullText"
 					type="button"
 					v-if="!isBig">
-					{{ mission.fullText ? 'Скрыть...' : 'Показать еще...' }}
+					{{ mission.fullText ? `${$t('collapse')}...` : `${$t('show')}...` }}
 				</button>
 			</div>
 		</section>

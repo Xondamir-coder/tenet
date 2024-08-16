@@ -25,5 +25,8 @@
 	"soon-text": "Soon",
 
 	"footer-text": "The information presented on this website is for informational purposes only and does not constitute a public offer. The contents and data may change without prior notice. We recommend verifying the details and conditions directly with our company's managers.",
-	"footer-dev": "developed by"
+	"footer-dev": "developed by",
+
+	"collapse": "Collapse",
+	"show": "more"
 }
