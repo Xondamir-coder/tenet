@@ -6,7 +6,7 @@
 					class="text"
 					v-for="{ lang, label } in langs"
 					:key="lang"
-					@click="changeLang(lang)">
+					@click="selectLang(lang)">
 					{{ label }}
 				</p>
 			</div>
@@ -16,18 +16,18 @@
 
 <script setup>
 import lenis from '@/js/lenis';
-import i18n from '@/locales';
+import { changeLang } from '@/locales';
 import { onMounted, ref } from 'vue';
 
 const isChosen = ref(false);
 
-const changeLang = lang => {
+const selectLang = lang => {
+	changeLang(lang);
 	setTimeout(() => {
 		document.body.classList.remove('lang');
 		lenis.start();
 	}, 1000);
 	isChosen.value = true;
-	i18n.global.locale = lang;
 };
 
 const langs = [

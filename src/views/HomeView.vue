@@ -23,8 +23,8 @@
 					<IconGlobal class="nav__global" />
 				</button>
 				<div class="nav__langs">
-					<p v-for="lang in ['uz', 'ru', 'en']" @click="changeLang(lang)">
-						{{ lang == 'ru' ? 'Рус' : lang == 'uz' ? "O'zb" : 'Eng' }}
+					<p v-for="lang in langs" @click="changeLang(lang.lang)">
+						{{ lang.label }}
 					</p>
 				</div>
 			</div>
@@ -57,8 +57,8 @@
 					</svg>
 				</button>
 				<div class="list__langs">
-					<p v-for="lang in ['uz', 'ru', 'en']" @click="changeLang(lang)">
-						{{ lang == 'ru' ? 'Рус' : lang == 'uz' ? "O'zb" : 'Eng' }}
+					<p v-for="lang in langs" @click="changeLang(lang.lang)">
+						{{ lang.label }}
 					</p>
 				</div>
 			</li>
@@ -129,86 +129,80 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
-import i18n from '@/locales';
+import i18n, { changeLang } from '@/locales';
 import BlackPattern from '@/components/BlackPattern.vue';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const langs = [
+	{
+		lang: 'en',
+		label: 'English'
+	},
+	{
+		lang: 'uz',
+		label: "O'zbek"
+	},
+	{
+		lang: 'ru',
+		label: 'Русский'
+	}
+];
 const isBig = window.innerWidth >= 500;
-const isMenuOpen = ref(false);
-const links = computed(() => [
-	i18n.global.t('link-about'),
-	i18n.global.t('link-mission'),
-	i18n.global.t('link-vision'),
-	i18n.global.t('link-goals'),
-	i18n.global.t('link-projects')
-]);
 
+const isMenuOpen = ref(false);
+const activeLinkIndex = ref(0);
+const isCreateTextShort = ref(isBig ? false : true);
+const mainRef = ref();
 const missions = ref([
 	{
-		title: computed(() => i18n.global.t('mission-title-1')),
-		subtitle: computed(() => i18n.global.t('mission-subtitle-1')),
-		text: computed(() => i18n.global.t('mission-text-1')),
+		title: computed(() => i18n.global.t(`mission-title-1`)),
+		subtitle: computed(() => i18n.global.t(`mission-subtitle-1`)),
+		text: computed(() => i18n.global.t(`mission-text-1`)),
 		fullText: false
 	},
 	{
-		title: computed(() => i18n.global.t('mission-title-2')),
-		subtitle: computed(() => i18n.global.t('mission-subtitle-2')),
-		text: computed(() => i18n.global.t('mission-text-2')),
+		title: computed(() => i18n.global.t(`mission-title-2`)),
+		subtitle: computed(() => i18n.global.t(`mission-subtitle-2`)),
+		text: computed(() => i18n.global.t(`mission-text-2`)),
 		fullText: false
 	},
 	{
-		title: computed(() => i18n.global.t('mission-title-3')),
-		subtitle: computed(() => i18n.global.t('mission-subtitle-3')),
-		text: computed(() => i18n.global.t('mission-text-3')),
+		title: computed(() => i18n.global.t(`mission-title-3`)),
+		subtitle: computed(() => i18n.global.t(`mission-subtitle-3`)),
+		text: computed(() => i18n.global.t(`mission-text-3`)),
 		fullText: false
 	}
 ]);
-const mainRef = ref();
-const isCreateTextShort = ref(isBig ? false : true);
-const activeLinkIndex = ref(0);
+const links = computed(() =>
+	['about', 'mission', 'vision', 'goals', 'projects'].map(link => i18n.global.t(`link-${link}`))
+);
 
 const toggleMenu = () => {
 	isMenuOpen.value = !isMenuOpen.value;
-	if (!isMenuOpen.value) {
-		lenis.start();
-		document.body.classList.remove('overflow-hidden');
-	} else {
-		lenis.stop();
-		document.body.classList.add('overflow-hidden');
-	}
+	document.body.classList.toggle('overflow-hidden', isMenuOpen.value);
+	lenis.toggle(!isMenuOpen.value);
 };
 const navigateTo = (linkIndex, isMobile) => {
 	isMobile && toggleMenu();
 	activeLinkIndex.value = linkIndex;
-	const el = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
-	lenisScrollTo(document.getElementById(el));
+	const elementId = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
+	lenisScrollTo(document.getElementById(elementId));
 };
-const lenisScrollTo = name =>
-	lenis.scrollTo(name, {
-		duration: 1.2,
-		ease: 'power3.inOut'
-	});
-const changeLang = lang => (i18n.global.locale = lang);
+const lenisScrollTo = element => lenis.scrollTo(element, { duration: 1.2, ease: 'power3.inOut' });
 
 onMounted(() => {
 	const observer = new IntersectionObserver(
 		entries => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					entry.target.classList.add('active');
-				} else {
-					entry.target.classList.remove('active');
-				}
+			entries.forEach(({ isIntersecting, target }) => {
+				target.classList.toggle('active', isIntersecting);
 			});
 		},
-		{
-			threshold: 0.3
-		}
+		{ threshold: 0.3 }
 	);
-	Array.from(mainRef.value.children).forEach(el => {
-		observer.observe(el);
-	});
+
+	Array.from(mainRef.value.children).forEach(el => observer.observe(el));
+
 	gsap.to('.list', {
 		scrollTrigger: {
 			trigger: '.list',
@@ -335,9 +329,9 @@ onMounted(() => {
 		translate: -50%;
 		background-color: rgba(0, 0, 0, 0.8);
 		padding: 1rem 2rem;
+		gap: 10px;
 		width: 80%;
 		display: flex;
-		gap: 10px;
 		border-radius: 10px;
 		flex-direction: column;
 		text-align: left;
@@ -345,6 +339,9 @@ onMounted(() => {
 		visibility: hidden;
 		transform: translateY(-2rem);
 		transition: opacity 300ms, transform 300ms, visibility 300ms;
+		p {
+			width: 100%;
+		}
 	}
 	&__lang {
 		font: inherit;
@@ -425,12 +422,10 @@ body.lang .nav__global {
 	}
 	&__langs {
 		position: absolute;
-		top: 100%;
 		background-color: #000;
 		color: #fff;
-		padding: 1rem;
+		padding: 15px;
 		border-radius: 15px;
-		left: -20%;
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
@@ -438,6 +433,8 @@ body.lang .nav__global {
 		visibility: hidden;
 		transform: translateY(-2rem);
 		transition: opacity 300ms, transform 300ms, visibility 300ms;
+		font-size: 16px;
+		right: -65%;
 		&-button {
 			background-color: transparent;
 			border: none;
