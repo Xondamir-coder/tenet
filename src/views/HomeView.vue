@@ -6,10 +6,10 @@
 			<BlackPattern class="menu__bg" />
 			<div
 				class="menu__item"
-				v-for="(link, i) in bottomNavLinks"
-				:key="link.name"
-				@click="navigateTo(i)">
-				<span>{{ link.name }}</span>
+				v-for="(link, i) in links"
+				:key="link"
+				@click="navigateTo(i, true)">
+				<span>{{ link }}</span>
 			</div>
 		</div>
 		<section class="nav section-padding" :class="{ open: isMenuOpen }">
@@ -143,23 +143,6 @@ const links = computed(() => [
 	i18n.global.t('link-goals'),
 	i18n.global.t('link-projects')
 ]);
-const bottomNavLinks = computed(() => [
-	{
-		name: i18n.global.t('link-about')
-	},
-	{
-		name: i18n.global.t('link-mission')
-	},
-	{
-		name: i18n.global.t('link-vision')
-	},
-	{
-		name: i18n.global.t('link-goals')
-	},
-	{
-		name: i18n.global.t('link-projects')
-	}
-]);
 
 const missions = ref([
 	{
@@ -195,8 +178,8 @@ const toggleMenu = () => {
 		document.body.classList.add('overflow-hidden');
 	}
 };
-const navigateTo = linkIndex => {
-	toggleMenu();
+const navigateTo = (linkIndex, isMobile) => {
+	isMobile && toggleMenu();
 	activeLinkIndex.value = linkIndex;
 	const el = linkIndex === 0 ? 'we' : linkIndex === 4 ? 'soon' : 'mission';
 	lenisScrollTo(document.getElementById(el));
@@ -314,7 +297,7 @@ onMounted(() => {
 		opacity: 0;
 		transition: opacity 1s, transform 1s;
 		@media only screen and (max-width: 500px) {
-			font-size: 54px;
+			font-size: 9.4rem;
 		}
 	}
 	&__massive {
@@ -325,7 +308,7 @@ onMounted(() => {
 		opacity: 0;
 		transition: opacity 1s, transform 1s 200ms;
 		@media only screen and (max-width: 500px) {
-			font-size: 100px;
+			font-size: 12rem;
 		}
 	}
 }
@@ -501,6 +484,10 @@ body.lang .nav__global {
 		color: #fff;
 		.logo {
 			color: #fff;
+		}
+		.nav__global {
+			fill: #fff;
+			transition: fill 300ms;
 		}
 	}
 	&.open .nav__open {
