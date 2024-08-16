@@ -3,6 +3,9 @@ body {
 	font-size: 1.6rem;
 	/* cursor: none; */
 }
+body.lang {
+	overflow: hidden;
+}
 html {
 	/* 1rem = 10px */
 	font-size: 62.5%;

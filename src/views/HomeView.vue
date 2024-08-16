@@ -388,6 +388,12 @@ onMounted(() => {
 			transform: translateY(0);
 			visibility: visible;
 		}
+		&:focus svg {
+			transform: rotate(180deg);
+		}
+		svg {
+			transition: transform 300ms;
+		}
 	}
 	&__item {
 		padding: 1rem 2rem;
@@ -426,6 +432,10 @@ onMounted(() => {
 	}
 }
 
+body.lang .main > *:not(.logo):not(.pattern__container) {
+	opacity: 0;
+	visibility: hidden;
+}
 .main {
 	position: relative;
 	padding-top: 6rem;
@@ -438,6 +448,8 @@ onMounted(() => {
 	font-family: var(--font-roboto);
 	& > * {
 		cursor: none;
+		transition-property: opacity, visibility;
+		transition-duration: 1s;
 	}
 }
 .mission {
