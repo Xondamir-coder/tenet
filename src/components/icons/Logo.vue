@@ -21,3 +21,18 @@ const props = defineProps({
 	}
 });
 </script>
+
+<style scoped>
+svg {
+	animation: appear 1s forwards;
+}
+
+@keyframes appear {
+	from {
+		transform: scale(0);
+	}
+	to {
+		transform: scale(1);
+	}
+}
+</style>

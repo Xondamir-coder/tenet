@@ -1,7 +1,7 @@
 <template>
 	<Transition name="fade">
 		<div class="container" v-if="!isChosen">
-			<div class="content">
+			<div class="content" ref="contentRef">
 				<p
 					class="text"
 					v-for="{ lang, label } in langs"
@@ -20,6 +20,7 @@ import i18n from '@/locales';
 import { onMounted, ref } from 'vue';
 
 const isChosen = ref(false);
+const contentRef = ref(null);
 
 const changeLang = lang => {
 	setTimeout(() => {
@@ -48,6 +49,9 @@ const langs = [
 onMounted(() => {
 	document.body.classList.add('lang');
 	lenis.stop();
+	setTimeout(() => {
+		contentRef.value.classList.add('active');
+	}, 1000);
 });
 </script>
 
@@ -71,10 +75,23 @@ onMounted(() => {
 	width: 100%;
 	max-width: 150px;
 }
+.content.active .text {
+	opacity: 1;
+	transform: translateY(0);
+}
 .text {
 	padding: 1rem;
 	border: 2px solid #e2e2e2;
 	cursor: pointer;
+	opacity: 0;
+	transform: translateY(-3rem);
+	transition: transform 0.5s ease, opacity 0.5s ease;
+	&:nth-child(2) {
+		transition-delay: 400ms;
+	}
+	&:last-child {
+		transition-delay: 700ms;
+	}
 }
 .fade-enter-active,
 .fade-leave-active {
