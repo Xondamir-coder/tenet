@@ -9,7 +9,6 @@
 				v-for="(link, i) in bottomNavLinks"
 				:key="link.name"
 				@click="navigateTo(i)">
-				<component :is="link.icon" />
 				<span>{{ link.name }}</span>
 			</div>
 		</div>
@@ -19,7 +18,16 @@
 				<IconClose class="nav__close" />
 			</button>
 			<Logo class="logo section-padding" />
-			<IconGlobal class="nav__global" />
+			<div>
+				<button class="nav__langs-button">
+					<IconGlobal class="nav__global" />
+				</button>
+				<div class="nav__langs">
+					<p v-for="lang in ['uz', 'ru', 'en']" @click="changeLang(lang)">
+						{{ lang == 'ru' ? 'Рус' : lang == 'uz' ? "O'zb" : 'Eng' }}
+					</p>
+				</div>
+			</div>
 		</section>
 		<ul class="list section-padding">
 			<li
@@ -115,14 +123,9 @@ import IconMenu from '@/components/icons/Menu.vue';
 import IconClose from '@/components/icons/Close.vue';
 import Footer from '@/components/Footer.vue';
 import lenis from '@/js/lenis';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Crown from '@/components/icons/Crown.vue';
-import Briefcase from '@/components/icons/Briefcase.vue';
-import Eye from '@/components/icons/Eye.vue';
-import Radar from '@/components/icons/Radar.vue';
-import Timer from '@/components/icons/Timer.vue';
 import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
@@ -142,24 +145,19 @@ const links = computed(() => [
 ]);
 const bottomNavLinks = computed(() => [
 	{
-		name: i18n.global.t('link-about'),
-		icon: Crown
+		name: i18n.global.t('link-about')
 	},
 	{
-		name: i18n.global.t('link-mission'),
-		icon: Briefcase
+		name: i18n.global.t('link-mission')
 	},
 	{
-		name: i18n.global.t('link-vision'),
-		icon: Eye
+		name: i18n.global.t('link-vision')
 	},
 	{
-		name: i18n.global.t('link-goals'),
-		icon: Radar
+		name: i18n.global.t('link-goals')
 	},
 	{
-		name: i18n.global.t('link-projects'),
-		icon: Timer
+		name: i18n.global.t('link-projects')
 	}
 ]);
 
@@ -439,6 +437,34 @@ body.lang .nav__global {
 	gap: 4rem;
 	transition: color 300ms, opacity 1s;
 	z-index: 10;
+	div:has(.nav__langs) {
+		position: relative;
+	}
+	&__langs {
+		position: absolute;
+		top: 100%;
+		background-color: #000;
+		color: #fff;
+		padding: 1rem;
+		border-radius: 15px;
+		left: -20%;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+		opacity: 0;
+		visibility: hidden;
+		transform: translateY(-2rem);
+		transition: opacity 300ms, transform 300ms, visibility 300ms;
+		&-button {
+			background-color: transparent;
+			border: none;
+			&:focus ~ .nav__langs {
+				opacity: 1;
+				transform: translateY(0);
+				visibility: visible;
+			}
+		}
+	}
 
 	@media only screen and (max-width: 500px) {
 		justify-content: space-between;

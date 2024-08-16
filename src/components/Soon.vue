@@ -142,10 +142,10 @@ onMounted(async () => {
 		position: absolute;
 		top: 50%;
 		right: 0;
-		translate: 30% -15%;
+		translate: 35% -30%;
 		animation: rotation 300s linear infinite; /* Smooth, continuous rotation */
 		transform-origin: center center;
-		scale: 1.1;
+		scale: 0.7;
 		@media only screen and (max-width: 768px) {
 			translate: 0 0;
 			scale: 1.5;
