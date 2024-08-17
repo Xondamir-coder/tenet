@@ -18,11 +18,11 @@
 			</button>
 			<Logo class="logo section-padding" />
 			<div>
-				<button class="nav__langs-button">
+				<button class="nav__langs-button" @click="toggleLang">
 					<IconGlobal class="nav__global" />
 				</button>
-				<div class="nav__langs">
-					<p v-for="lang in langs" @click="changeLang(lang.lang)">
+				<div class="nav__langs" :class="{ show: showLangMobile }">
+					<p v-for="lang in langs" @click="selectLang(lang.lang)">
 						{{ lang.label }}
 					</p>
 				</div>
@@ -151,6 +151,7 @@ const isBig = window.innerWidth >= 500;
 const isMenuOpen = ref(false);
 const activeLinkIndex = ref(0);
 const isCreateTextShort = ref(isBig ? false : true);
+const showLangMobile = ref(false);
 const mainRef = ref();
 const missions = ref([
 	{
@@ -180,6 +181,7 @@ const toggleMenu = () => {
 	isMenuOpen.value = !isMenuOpen.value;
 	document.body.classList.toggle('overflow-hidden', isMenuOpen.value);
 };
+const toggleLang = () => (showLangMobile.value = !showLangMobile.value);
 const navigateTo = (linkIndex, isMobile) => {
 	isMobile && toggleMenu();
 	activeLinkIndex.value = linkIndex;
@@ -187,6 +189,10 @@ const navigateTo = (linkIndex, isMobile) => {
 	lenisScrollTo(document.getElementById(elementId));
 };
 const lenisScrollTo = element => lenis.scrollTo(element, { duration: 1.2, ease: 'power3.inOut' });
+const selectLang = lang => {
+	changeLang(lang);
+	toggleLang();
+};
 
 onMounted(() => {
 	const observer = new IntersectionObserver(
@@ -336,6 +342,7 @@ onMounted(() => {
 		visibility: hidden;
 		transform: translateY(-2rem);
 		transition: opacity 300ms, transform 300ms, visibility 300ms;
+
 		p {
 			width: 100%;
 		}
@@ -432,14 +439,14 @@ body.lang .nav__global {
 		transition: opacity 300ms, transform 300ms, visibility 300ms;
 		font-size: 16px;
 		right: -65%;
+		&.show {
+			opacity: 1;
+			transform: translateY(0);
+			visibility: visible;
+		}
 		&-button {
 			background-color: transparent;
 			border: none;
-			&:focus-within ~ .nav__langs {
-				opacity: 1;
-				transform: translateY(0);
-				visibility: visible;
-			}
 		}
 	}
 
