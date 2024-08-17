@@ -33,6 +33,11 @@
 	</svg>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted, ref } from 'vue';
+
+const svgRef = ref();
+onMounted(() => {});
+</script>
 
 <style lang="scss" scoped></style>

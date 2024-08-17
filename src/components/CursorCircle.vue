@@ -1,22 +1,17 @@
 <template>
-	<div id="circle" class="circle" v-if="isOnPc"></div>
+	<div ref="circleRef" class="circle" v-if="isOnPc">
+		<Pattern />
+	</div>
 </template>
 
 <script setup>
 import gsap from 'gsap';
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
+import Pattern from './Pattern.vue';
+
+const circleRef = ref(null);
 
 // Update mouse position on mousemove
-const updateMousePosition = event => {
-	const mouseX = event.clientX;
-	const mouseY = event.clientY;
-
-	gsap.to('#circle', {
-		top: mouseY,
-		left: mouseX,
-		duration: 0.2
-	});
-};
 const detectDevice = () => {
 	const userAgent = navigator.userAgent.toLowerCase();
 	const isMobile = /iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i.test(
@@ -33,38 +28,30 @@ const detectDevice = () => {
 	}
 };
 const isOnPc = detectDevice() == 'PC/Laptop';
+const handleMouseMove = e => {
+	gsap.to(circleRef.value, {
+		duration: 0.3,
+		clipPath: `circle(50px at ${e.pageX + 2}px ${e.pageY - 100}px)`
+	});
+};
 
-// Add and remove event listeners
 onMounted(() => {
-	if (!isOnPc) return;
-	updateMousePosition({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
-
-	// Add mousemove event listener
-	window.addEventListener('mousemove', updateMousePosition);
+	window.addEventListener('mousemove', handleMouseMove);
 });
 
 onUnmounted(() => {
-	if (!isOnPc) return;
-	window.removeEventListener('mousemove', updateMousePosition);
+	window.removeEventListener('mousemove', handleMouseMove);
 });
 </script>
 
 <style scoped lang="scss">
 .circle {
-	position: fixed;
-	z-index: 1;
-	width: 100px;
-	height: 100px;
-	border-radius: 50%;
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	clip-path: circle(50px at 50% 50%);
 	pointer-events: none;
-	top: 0; /* Centering the circle */
-	left: 0; /* Centering the circle */
-	transform: translate(-50%, -50%);
-	pointer-events: none;
-	-webkit-backdrop-filter: opacity(1); /* For Safari */
-	backdrop-filter: opacity(1); /* For other modern browsers */
-	-webkit-mix-blend-mode: screen; /* For Safari */
-	mix-blend-mode: screen; /* For other modern browsers */
 
 	@media only screen and (max-width: 1000px) {
 		display: none;

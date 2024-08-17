@@ -1,5 +1,4 @@
 <template>
-	<CursorCircle />
 	<main class="main" ref="mainRef">
 		<BgPattern />
 		<div class="menu section-padding" :class="{ open: isMenuOpen }">
@@ -126,7 +125,6 @@ import lenis from '@/js/lenis';
 import { computed, onMounted, ref } from 'vue';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import CursorCircle from '@/components/CursorCircle.vue';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
 import i18n, { changeLang } from '@/locales';
