@@ -1,5 +1,5 @@
 <template>
-	<main class="main" ref="mainRef">
+	<main class="main" ref="mainRef" @click="handleMainClick">
 		<BgPattern />
 		<div class="menu section-padding" :class="{ open: isMenuOpen }">
 			<img src="@/assets/black-pattern.webp" class="menu__bg" />
@@ -197,6 +197,11 @@ const lenisScrollTo = element => lenis.scrollTo(element, { duration: 1.2, ease: 
 const selectLang = lang => {
 	changeLang(lang);
 	toggleLang();
+};
+const handleMainClick = () => {
+	if (event.target.closest('button')) return;
+	showLangMobile.value = false;
+	showLangs.value = false;
 };
 
 onMounted(() => {
