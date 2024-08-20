@@ -77,12 +77,19 @@ onMounted(() => {
 	cursor: pointer;
 	animation: fade-in forwards 700ms;
 	opacity: 0;
-	font-size: 20px;
+	font-size: 1.8rem;
+	transition: background-color 300ms, color 300ms, border-color 300ms;
+
 	&:nth-child(2) {
 		animation-delay: 400ms;
 	}
 	&:last-child {
 		animation-delay: 700ms;
+	}
+	&:hover {
+		background-color: #000;
+		border-color: #000;
+		color: #fff;
 	}
 }
 .fade-enter-active,

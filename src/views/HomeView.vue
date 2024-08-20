@@ -386,9 +386,15 @@ onMounted(() => {
 		font-weight: 400;
 		font-size: 2rem;
 		opacity: 0.7;
-		transition: opacity 300ms, background-image 300ms, color 300ms;
+		transition: opacity 300ms, background-image 300ms, color 300ms, background-color 300ms,
+			box-shadow 300ms;
 		display: flex;
 		align-items: center;
+		&:not(:last-child):hover {
+			background-color: #000;
+			color: #fff;
+			opacity: 1;
+		}
 		&:has(.list__lang) {
 			font-family: var(--font-roboto);
 			opacity: 1;
