@@ -38,7 +38,7 @@
 				{{ link }}
 			</li>
 			<li class="list__item">
-				<button class="list__lang">
+				<button class="list__lang" @click="toggleLangs">
 					<span>{{
 						$i18n.locale == 'ru' ? 'Рус' : $i18n.locale == 'uz' ? "O'zb" : 'Eng'
 					}}</span>
@@ -55,8 +55,8 @@
 							fill="white" />
 					</svg>
 				</button>
-				<div class="list__langs">
-					<p v-for="lang in langs" @click="changeLang(lang.lang)">
+				<div class="list__langs" :class="{ show: showLangs }">
+					<p v-for="lang in langs" @click="selectLangs(lang.lang)">
 						{{ lang.label }}
 					</p>
 				</div>
@@ -152,6 +152,7 @@ const activeLinkIndex = ref(0);
 const isCreateTextShort = ref(isBig ? false : true);
 const showLangMobile = ref(false);
 const mainRef = ref();
+const showLangs = ref(false);
 const missions = ref([
 	{
 		title: computed(() => i18n.global.t(`mission-title-1`)),
@@ -176,6 +177,11 @@ const links = computed(() =>
 	['about', 'mission', 'vision', 'goals', 'projects'].map(link => i18n.global.t(`link-${link}`))
 );
 
+const selectLangs = lang => {
+	changeLang(lang);
+	toggleLangs();
+};
+const toggleLangs = () => (showLangs.value = !showLangs.value);
 const toggleMenu = () => {
 	isMenuOpen.value = !isMenuOpen.value;
 	document.body.classList.toggle('overflow-hidden', isMenuOpen.value);
@@ -341,6 +347,11 @@ onMounted(() => {
 		visibility: hidden;
 		transform: translateY(-2rem);
 		transition: opacity 300ms, transform 300ms, visibility 300ms;
+		&.show {
+			opacity: 1;
+			transform: translateY(0);
+			visibility: visible;
+		}
 
 		p {
 			width: 100%;
@@ -358,13 +369,10 @@ onMounted(() => {
 		border-radius: 99px;
 		cursor: pointer;
 
-		&:focus-within ~ .list__langs {
-			opacity: 1;
-			transform: translateY(0);
-			visibility: visible;
-		}
-		&:focus-within svg {
-			transform: rotate(180deg);
+		&:has(+ .list__langs.show) {
+			svg {
+				transform: rotate(180deg);
+			}
 		}
 
 		svg {

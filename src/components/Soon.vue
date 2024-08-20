@@ -4,7 +4,7 @@
 		<p class="soon__text">{{ $t('soon-text') }}</p>
 		<!-- <canvas ref="canvasRef"></canvas> -->
 		<div class="soon__planet">
-			<img src="@/assets/planet.png" alt="planet" />
+			<img src="@/assets/planet.webp" alt="planet" />
 		</div>
 	</section>
 </template>
