@@ -2,7 +2,7 @@
 	<main class="main" ref="mainRef">
 		<BgPattern />
 		<div class="menu section-padding" :class="{ open: isMenuOpen }">
-			<BlackPattern class="menu__bg" />
+			<img src="@/assets/black-pattern.webp" class="menu__bg" />
 			<div
 				class="menu__item"
 				v-for="(link, i) in links"
@@ -128,7 +128,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import BgPattern from '@/components/BgPattern.vue';
 import Soon from '@/components/Soon.vue';
 import i18n, { changeLang } from '@/locales';
-import BlackPattern from '@/components/BlackPattern.vue';
 
 gsap.registerPlugin(ScrollTrigger);
 

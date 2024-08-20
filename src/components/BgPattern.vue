@@ -1,19 +1,21 @@
 <template>
 	<div class="pattern__container">
 		<CursorCircle />
-		<Pattern class="pattern" />
+		<img src="@/assets/pattern.webp" alt="pattern" class="pattern" />
 	</div>
 </template>
 
 <script setup>
-import Pattern from '@/components/Pattern.vue';
 import CursorCircle from './CursorCircle.vue';
 </script>
 
 <style lang="scss" scoped>
 .pattern {
-	filter: opacity(0.1);
+	opacity: 0.1;
 	pointer-events: none;
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
 }
 .pattern__container {
 	position: absolute;

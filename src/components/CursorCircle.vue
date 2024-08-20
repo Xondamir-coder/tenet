@@ -1,13 +1,12 @@
 <template>
 	<div ref="circleRef" class="circle" v-if="isOnPc">
-		<Pattern />
+		<img class="pattern" src="@/assets/pattern.webp" alt="pattern" />
 	</div>
 </template>
 
 <script setup>
 import gsap from 'gsap';
 import { onMounted, onUnmounted, ref } from 'vue';
-import Pattern from './Pattern.vue';
 
 const circleRef = ref(null);
 
@@ -45,6 +44,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped lang="scss">
+.pattern {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
 .circle {
 	position: absolute;
 	inset: 0;
