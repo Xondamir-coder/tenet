@@ -15,7 +15,6 @@ import CursorCircle from './CursorCircle.vue';
 	pointer-events: none;
 	height: 100%;
 	width: 100%;
-	object-fit: cover;
 }
 .pattern__container {
 	position: absolute;
