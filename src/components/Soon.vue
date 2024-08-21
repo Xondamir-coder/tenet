@@ -120,6 +120,8 @@ onMounted(async () => {
 		font-family: var(--font-bebas);
 		line-height: 0.9;
 		z-index: 1;
+		text-shadow: 7px 7px 20px #63b9da;
+
 		@media only screen and (max-width: 768px) {
 			font-size: 6rem;
 		}
@@ -142,10 +144,11 @@ onMounted(async () => {
 		position: absolute;
 		top: 50%;
 		right: 0;
-		translate: 35% -30%;
+		translate: 30% -28%;
 		animation: rotation 300s linear infinite; /* Smooth, continuous rotation */
 		transform-origin: center center;
-		scale: 0.7;
+		scale: 0.9;
+
 		@media only screen and (max-width: 768px) {
 			translate: 0 0;
 			scale: 1.5;
