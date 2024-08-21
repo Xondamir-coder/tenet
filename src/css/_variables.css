@@ -1,4 +1,6 @@
 :root {
 	--font-bebas: 'Bebas Neue Pro', sans-serif;
 	--font-roboto: 'Roboto Condensed', sans-serif;
+
+	--gradient: linear-gradient(3.23deg, #0090da 4.56%, #00364f 115.73%);
 }

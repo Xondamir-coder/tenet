@@ -111,7 +111,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 	&__phone {
 		width: 3.8rem;
 		height: 3.8rem;
-		background-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		background-image: var(--gradient);
 		color: #fff;
 		border-radius: 50%;
 		display: grid;

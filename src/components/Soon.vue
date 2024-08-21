@@ -130,7 +130,7 @@ onMounted(async () => {
 		font-size: 3rem;
 		font-weight: 700;
 		line-height: 2.6rem;
-		background: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		background: var(--gradient);
 		cursor: pointer;
 		z-index: 1;
 		@media only screen and (max-width: 768px) {

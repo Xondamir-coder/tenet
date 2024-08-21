@@ -133,16 +133,16 @@ gsap.registerPlugin(ScrollTrigger);
 
 const langs = [
 	{
-		lang: 'en',
-		label: 'Eng'
-	},
-	{
 		lang: 'uz',
 		label: "O'zb"
 	},
 	{
 		lang: 'ru',
 		label: 'Рус'
+	},
+	{
+		lang: 'en',
+		label: 'Eng'
 	}
 ];
 const isBig = window.innerWidth >= 500;
@@ -410,7 +410,7 @@ onMounted(() => {
 			color: #fff;
 		}
 		&--active {
-			background-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+			background-image: var(--gradient);
 			color: #fff;
 			opacity: 1;
 		}
@@ -583,7 +583,7 @@ body.lang .main > *:not(.nav):not(.pattern__container) {
 		gap: 2rem;
 		padding-left: 2rem;
 		border-left: 4px solid transparent;
-		border-image: linear-gradient(180deg, #000000 -0.69%, #cc4200 99.31%);
+		border-image: var(--gradient);
 		border-image-slice: 1;
 		opacity: 0;
 		transform: rotateY(-100deg) translate(9rem, 9rem);
