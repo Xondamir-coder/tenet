@@ -5,7 +5,7 @@
 			<div class="footer__phone">
 				<PhoneIcon />
 			</div>
-			<a class="footer__tel" href="tel:+99 000 90 00">99 000 9 000</a>
+			<a class="footer__tel" href="tel:+998 99 000 90 00">99 000 9 000</a>
 			<ul class="footer__links">
 				<li class="footer__link" v-for="link in links" :key="link">
 					<a href="#"><component :is="link"></component></a>
