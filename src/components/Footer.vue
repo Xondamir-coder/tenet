@@ -8,7 +8,7 @@
 			<a class="footer__tel" href="tel:+998 99 000 90 00">99 000 9 000</a>
 			<ul class="footer__links">
 				<li class="footer__link" v-for="link in links" :key="link">
-					<a href="#"><component :is="link"></component></a>
+					<a target="_blank" :href="link.href"><component :is="link.icon"></component></a>
 				</li>
 			</ul>
 		</div>
@@ -32,7 +32,28 @@ import FacebookIcon from '@/components/icons/Facebook.vue';
 import InstagramIcon from '@/components/icons/Instagram.vue';
 import LinkedinIcon from '@/components/icons/Linkedin.vue';
 
-const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinIcon];
+const links = [
+	{
+		icon: YoutubeIcon,
+		href: 'https://www.youtube.com/'
+	},
+	{
+		icon: TelegramIcon,
+		href: 'https://t.me/tenetgroupuz'
+	},
+	{
+		icon: FacebookIcon,
+		href: 'https://www.facebook.com/profile.php?id=61565098136013'
+	},
+	{
+		icon: InstagramIcon,
+		href: 'https://www.instagram.com/tenet.uz?igsh=OXZ1cjEwOXpzeXJk'
+	},
+	{
+		icon: LinkedinIcon,
+		href: 'https://www.linkedin.com/company/104617818/admin/dashboard/'
+	}
+];
 </script>
 
 <style lang="scss" scoped>
