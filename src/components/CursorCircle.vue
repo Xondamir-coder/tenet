@@ -29,7 +29,7 @@ const detectDevice = () => {
 const isOnPc = detectDevice() == 'PC/Laptop';
 const handleMouseMove = e => {
 	gsap.to(circleRef.value, {
-		duration: 0.3,
+		duration: 0.1,
 		clipPath: `circle(50px at ${e.pageX + 2}px ${e.pageY - 100}px)`
 	});
 };

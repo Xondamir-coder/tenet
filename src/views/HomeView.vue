@@ -244,6 +244,17 @@ onMounted(() => {
 		display: none;
 	}
 }
+body.lang {
+	.create__big,
+	.create__massive {
+		transform: translateX(-100%) !important;
+		opacity: 0 !important;
+	}
+	.create__right > * {
+		transform: translateX(100%) !important;
+		opacity: 0 !important;
+	}
+}
 .create {
 	display: flex;
 	align-items: flex-start;
@@ -518,7 +529,7 @@ body.lang .nav__global {
 	}
 }
 
-body.lang .main > *:not(.nav):not(.pattern__container) {
+body.lang .main > *:not(.nav):not(.pattern__container):not(.create) {
 	opacity: 0;
 	visibility: hidden;
 }

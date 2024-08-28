@@ -64,7 +64,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 		line-height: 1.5;
 		opacity: 0;
 		transform: translateY(-6rem);
-		transition-delay: 600ms;
+		transition-delay: 300ms;
 		text-transform: uppercase;
 		&:not(:has(a)) {
 			font-size: 12px;
@@ -83,7 +83,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 		font-family: var(--font-bebas);
 		opacity: 0;
 		transform: translateY(-6rem);
-		transition-delay: 400ms;
+		transition-delay: 200ms;
 		font-size: 1.8rem;
 		font-weight: 700;
 		line-height: 23.2px;
@@ -106,7 +106,7 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 		opacity: 0;
 		gap: 5px;
 		transform: translateY(-6rem);
-		transition-delay: 200ms;
+		transition-delay: 100ms;
 	}
 	&__phone {
 		width: 3.8rem;

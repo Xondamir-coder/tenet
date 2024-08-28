@@ -122,8 +122,9 @@ onMounted(async () => {
 		z-index: 1;
 		text-shadow: 7px 7px 20px #63b9da;
 
-		@media only screen and (max-width: 768px) {
+		@media only screen and (max-width: 500px) {
 			font-size: 6rem;
+			max-width: 180px;
 		}
 	}
 	&__text {
@@ -149,9 +150,8 @@ onMounted(async () => {
 		transform-origin: center center;
 		scale: 0.9;
 
-		@media only screen and (max-width: 768px) {
-			translate: 0 0;
-			scale: 1.5;
+		@media only screen and (max-width: 500px) {
+			scale: 1.4;
 		}
 
 		img {
