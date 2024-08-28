@@ -256,13 +256,17 @@ body.lang {
 	}
 }
 .create {
+	$transition-duration: 1s;
 	display: flex;
 	align-items: flex-start;
 	gap: 2rem;
 	margin-bottom: 5rem;
 	font-family: var(--font-bebas);
-	transition: opacity 1s, visibility 1s;
+	transition: opacity $transition-duration, visibility $transition-duration;
 
+	@media only screen and (max-width: 768px) {
+		$transition-duration: 0.5s;
+	}
 	@media only screen and (max-width: 1000px) {
 		flex-direction: column;
 	}
@@ -295,7 +299,7 @@ body.lang {
 		& > * {
 			transform: translateX(100%);
 			opacity: 0;
-			transition: transform 1s, opacity 1s;
+			transition: transform $transition-duration, opacity $transition-duration;
 		}
 		&-text {
 			font-family: var(--font-roboto);
@@ -313,7 +317,7 @@ body.lang {
 		font-size: 14rem;
 		transform: translateX(-100%);
 		opacity: 0;
-		transition: opacity 1s, transform 1s;
+		transition: opacity $transition-duration, transform $transition-duration;
 		@media only screen and (max-width: 500px) {
 			font-size: 9.4rem;
 		}
@@ -324,7 +328,7 @@ body.lang {
 		line-height: 1;
 		transform: translateX(-100%);
 		opacity: 0;
-		transition: opacity 1s, transform 1s 200ms;
+		transition: opacity $transition-duration, transform $transition-duration 200ms;
 		@media only screen and (max-width: 500px) {
 			font-size: 12rem;
 		}
@@ -599,6 +603,9 @@ body.lang .main > *:not(.nav):not(.pattern__container):not(.create) {
 		opacity: 0;
 		transform: rotateY(-100deg) translate(9rem, 9rem);
 		transition: transform 700ms, opacity 700ms;
+		@media only screen and (max-width: 768px) {
+			transition: opacity 0.3s, transform 0.3s;
+		}
 		@for $i from 2 through 3 {
 			&:nth-child(#{$i}) {
 				transition-delay: $i * 100ms;

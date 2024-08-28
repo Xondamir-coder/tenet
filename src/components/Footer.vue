@@ -57,6 +57,9 @@ const links = [YoutubeIcon, TelegramIcon, FacebookIcon, InstagramIcon, LinkedinI
 	}
 	& > * {
 		transition: opacity 1s, transform 1s;
+		@media only screen and (max-width: 768px) {
+			transition: opacity 0.5s, transform 0.5s;
+		}
 	}
 	&__text {
 		max-width: 150ch;
