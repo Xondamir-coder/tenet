@@ -36,6 +36,9 @@ const handleMouseMove = e => {
 
 onMounted(() => {
 	window.addEventListener('mousemove', handleMouseMove);
+	window.addEventListener('scroll', e => {
+		console.log(e);
+	});
 });
 
 onUnmounted(() => {
@@ -49,10 +52,6 @@ onUnmounted(() => {
 	width: 100%;
 }
 .circle {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
 	clip-path: circle(50px at 50% 50%);
 	pointer-events: none;
 

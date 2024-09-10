@@ -22,6 +22,11 @@ import CursorCircle from './CursorCircle.vue';
 	width: 100%;
 	padding: 0;
 	top: 10rem;
+	display: grid;
+	& > * {
+		grid-row: 1 / span 1;
+		grid-column: 1 / span 1;
+	}
 
 	@media only screen and (max-width: 1000px) {
 		top: -8rem;

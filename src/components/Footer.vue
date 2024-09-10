@@ -16,7 +16,7 @@
 		<p class="footer__text">
 			{{ $t('footer-text') }}
 		</p>
-		<p class="footer__text">
+		<p class="footer__text footer__dev">
 			{{ $t('footer-dev') }}
 			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>
 		</p>
@@ -82,6 +82,9 @@ const links = [
 			transition: opacity 0.5s, transform 0.5s;
 		}
 	}
+	&__dev {
+		font-size: 1rem;
+	}
 	&__text {
 		max-width: 150ch;
 		text-align: center;
@@ -112,6 +115,7 @@ const links = [
 		font-weight: 700;
 		line-height: 23.2px;
 		text-align: center;
+		text-transform: uppercase;
 	}
 	&__link svg {
 		width: 2.5rem;

@@ -208,7 +208,7 @@ onMounted(() => {
 	const observer = new IntersectionObserver(
 		entries => {
 			entries.forEach(({ isIntersecting, target }) => {
-				target.classList.toggle('active', isIntersecting);
+				if (isIntersecting) target.classList.add('active');
 			});
 		},
 		{ threshold: 0.3 }
