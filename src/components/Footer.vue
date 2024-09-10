@@ -16,10 +16,6 @@
 		<p class="footer__text">
 			{{ $t('footer-text') }}
 		</p>
-		<p class="footer__text footer__dev">
-			{{ $t('footer-dev') }}
-			<a href="http://spacelabs.uz" target="_blank" rel="noopener noreferrer">Space Labs</a>
-		</p>
 	</footer>
 </template>
 
