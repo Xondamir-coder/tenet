@@ -36,9 +36,6 @@ const handleMouseMove = e => {
 
 onMounted(() => {
 	window.addEventListener('mousemove', handleMouseMove);
-	window.addEventListener('scroll', e => {
-		console.log(e);
-	});
 });
 
 onUnmounted(() => {
